@@ -1295,7 +1295,10 @@
        ========================================================================== */
     // 1. Enter your Formspree endpoint URL here (e.g., 'https://formspree.io/f/mqkrvkpd')
     // Get free Formspree ID at https://formspree.io
-    const FORMSPREE_ENDPOINT = "https://formsubmit.co/ajax/shingod.rakeshkumar@gmail.com" ;
+    /* ==========================================================================
+       CONFIGURATIONS: TARGET GMAIL RECIPIENT
+       ========================================================================== */
+    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
 
     // 2. Fallback Email (if Formspree is not set up, it triggers a mail client for backup)
 
@@ -1783,11 +1786,6 @@
         isDraggingKnife = false;
       }
     }, { passive: true });
-
-   /* ==========================================================================
-       CONFIGURATIONS: TARGET GMAIL RECIPIENT
-       ========================================================================== */
-    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
 
     /* ==========================================================================
        5. SECRET WISH SUBMISSION (Direct AJAX to Gmail + Shooting Star Effect)
