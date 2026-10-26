@@ -1784,13 +1784,19 @@
       }
     }, { passive: true });
 
+   /* ==========================================================================
+       CONFIGURATIONS: TARGET GMAIL RECIPIENT
+       ========================================================================== */
+    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
+
     /* ==========================================================================
-       5. SECRET WISH SUBMISSION WITH SHOOTING STAR EFFECT
+       5. SECRET WISH SUBMISSION (Direct AJAX to Gmail + Shooting Star Effect)
        ========================================================================== */
     const wishForm = document.getElementById('wishForm');
     const sendWishBtn = document.getElementById('sendWishBtn');
     const wishStatusMessage = document.getElementById('wishStatusMessage');
     const starLayer = document.getElementById('starLayer');
+    const wishContentInput = document.getElementById('wishContent');
 
     function triggerShootingStar() {
       starLayer.classList.remove('active');
@@ -1801,54 +1807,59 @@
 
     wishForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const wishText = document.getElementById('wishContent').value.trim();
+      const wishText = wishContentInput.value.trim();
       if (!wishText) return;
 
+      // Loading state
       sendWishBtn.disabled = true;
       sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to the stars...</span>`;
 
+      // Trigger starry visual effect
       triggerShootingStar();
 
-      const isConfigured = !FORMSPREE_ENDPOINT.includes("YOUR_FORMSPREE_ID_HERE");
+      try {
+        const response = await fetch(`https://formsubmit.co/ajax/${TARGET_GMAIL}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
+            Sender: "Diya (Butku)",
+            "Birthday Wish": wishText,
+            Sent_At: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+          })
+        });
 
-      if (isConfigured) {
-        try {
-          const res = await fetch(FORMSPREE_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
-              sender: "Diya (Butku)",
-              wish: wishText
-            })
-          });
+        const result = await response.json();
 
-          if (res.ok) {
-            displayWishSuccess();
-          } else {
-            fallbackEmailDispatch(wishText);
-          }
-        } catch (err) {
+        if (response.ok && (result.success === "true" || result.success === true)) {
+          displayWishSuccess();
+        } else {
           fallbackEmailDispatch(wishText);
         }
-      } else {
+      } catch (err) {
+        console.error("Transmission error:", err);
         fallbackEmailDispatch(wishText);
       }
     });
 
     function displayWishSuccess() {
       wishStatusMessage.className = 'wish-status-badge success';
-      wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every wish you made is held close to my heart.`;
-      sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! ✨</span>`;
+      wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
+      sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
+      sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      wishContentInput.disabled = true;
       triggerConfettiParty();
     }
 
     function fallbackEmailDispatch(wish) {
-      const mailto = `mailto:${CREATOR_EMAIL}?subject=${encodeURIComponent("Diya's Birthday Wish! 🎂💖")}&body=${encodeURIComponent("My Birthday Wish:\n\n" + wish + "\n\nWith love,\nDiya (Butku)")}`;
+      const mailto = `mailto:${TARGET_GMAIL}?subject=${encodeURIComponent("Diya's Birthday Wish! 🎂💖")}&body=${encodeURIComponent("My Secret Birthday Wish:\n\n" + wish + "\n\nWith love,\nDiya (Butku)")}`;
       wishStatusMessage.className = 'wish-status-badge success';
-      wishStatusMessage.innerHTML = `💌 <strong>Wish captured!</strong> If Formspree is not yet linked, <a href="${mailto}" style="color: #065f46; font-weight:700; text-decoration: underline;">tap here to forward it via your mail app</a>!`;
+      wishStatusMessage.innerHTML = `💌 <strong>Wish captured!</strong> If the server is delayed, <a href="${mailto}" style="color: #065f46; font-weight:700; text-decoration: underline;">click here to send directly via Gmail app</a>!`;
       window.location.href = mailto;
-      sendWishBtn.innerHTML = `<i class="fa-solid fa-envelope-circle-check"></i> <span>Wish Sealed!</span>`;
+      sendWishBtn.innerHTML = `<i class="fa-solid fa-envelope-circle-check"></i> <span>Wish Forwarded!</span>`;
       sendWishBtn.disabled = false;
       triggerConfettiParty();
     }
