@@ -43,6 +43,11 @@
       user-select: none;
     }
 
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(135deg, #fff5f6 0%, #fff0f5 35%, #fff7ed 70%, #fdf4ff 100%);
@@ -892,31 +897,111 @@
       50% { transform: scale(1.3); }
     }
 
-    /* Mobile Responsive Optimizations */
+    /* ==========================================================================
+       MOBILE RESPONSIVE OPTIMIZATIONS
+       ========================================================================== */
     @media (max-width: 680px) {
+      .top-nav {
+        padding: 0.65rem 1rem;
+      }
+      .brand-logo {
+        font-size: 1.45rem;
+      }
+      .music-pill-btn {
+        padding: 0.45rem 0.85rem;
+        font-size: 0.78rem;
+      }
       .container {
-        padding: 4.8rem 1rem 3rem 1rem;
+        padding: 4.6rem 0.85rem 2.5rem 0.85rem;
       }
       .stage-card {
-        padding: 2rem 1.25rem;
-        border-radius: 24px;
-        margin-bottom: 2.5rem;
+        padding: 1.8rem 1rem;
+        border-radius: 22px;
+        margin-bottom: 2.2rem;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      h2 {
+        font-size: 1.45rem;
       }
       .highlight-name {
-        font-size: 2.6rem;
+        font-size: 2.3rem;
+        line-height: 1.2;
+      }
+      p.stage-subtitle {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0.9rem auto 1.4rem auto;
+      }
+      .stage-interactive-area {
+        margin: 1.2rem auto;
+        min-height: 330px;
+        max-width: 100%;
       }
       .cake-stage {
-        transform: scale(0.92);
+        transform: scale(0.85);
+        transform-origin: bottom center;
+      }
+      .knife-tool {
+        font-size: 2.4rem;
+        top: -15px;
+        right: 5px;
+      }
+      .slice-guide-banner {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.9rem;
+      }
+      .star-wish-box {
+        padding: 1.25rem 1rem;
+        border-radius: 18px;
+      }
+      .star-wish-box textarea {
+        font-size: 16px; /* Prevents auto-zoom on mobile browsers */
+        padding: 0.8rem 0.9rem;
+        min-height: 110px;
       }
       .polaroid-grid {
         grid-template-columns: 1fr;
-        max-width: 320px;
+        max-width: 290px;
         margin-left: auto;
         margin-right: auto;
+        gap: 1.5rem;
+        padding: 0;
+      }
+      .polaroid-card {
+        height: 330px;
+      }
+      .polaroid-front-img {
+        height: 220px;
+      }
+      .polaroid-back-text {
+        font-size: 1.35rem;
+        line-height: 1.45;
+      }
+      .letter-card {
+        padding: 1.8rem 1.2rem;
+        border-radius: 18px;
+      }
+      .letter-body {
+        font-size: 0.98rem;
+        line-height: 1.8;
+      }
+      .letter-signature {
+        font-size: 1.7rem;
       }
       .btn-action {
         width: 100%;
-        padding: 0.88rem 1.5rem;
+        padding: 0.85rem 1.4rem;
+        font-size: 0.98rem;
+      }
+      .lightbox-modal {
+        padding: 0.75rem;
+      }
+      .lightbox-box {
+        max-width: 95%;
+        padding: 8px;
+        border-radius: 14px;
       }
     }
   </style>
@@ -1091,7 +1176,7 @@
          1. Create a free form at https://formspree.io and paste your endpoint below.
          2. Or simply change the fallback email in the JavaScript constant `CREATOR_EMAIL`.
          ========================================================================== -->
-<section class="stage-card" id="stage-wish-section">
+    <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
         <span>Direct To My Heart</span>
@@ -1814,7 +1899,7 @@
       }
     }, { passive: true });
 
- /* ==========================================================================
+    /* ==========================================================================
        5. SECRET WISH SUBMISSION (Guaranteed Silent Delivery + Animation)
        ========================================================================== */
     const wishForm = document.getElementById('wishForm');
