@@ -1205,7 +1205,7 @@
         <div class="star-wish-box">
           <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
 
-          <!-- Direct FormSubmit pipeline to your Gmail -->
+          <!-- Direct FormSubmit pipeline to your Gmail (URL is set automatically by TARGET_GMAIL in JS) -->
           <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
             <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
             <input type="hidden" name="_captcha" value="false">
@@ -1394,6 +1394,18 @@
        JAVASCRIPT LOGIC
        ========================================================================== -->
   <script>
+    /* ==========================================================================
+       0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
+       (Any changes here instantly update the form action)
+       ========================================================================== */
+    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
+
+    // Dynamically wire the form to the target Gmail address
+    const wishFormElement = document.getElementById('wishForm');
+    if (wishFormElement) {
+      wishFormElement.action = `https://formsubmit.co/${TARGET_GMAIL}`;
+    }
+
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
        ========================================================================== */
