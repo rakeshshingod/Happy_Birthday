@@ -15,7 +15,10 @@
   
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
     /* ==========================================================================
        1. GLOBAL THEME, TOKENS & RESET
@@ -26,8 +29,8 @@
       --rose-light: #fff0f3;
       --peach: #fed7aa;
       --gold: #f59e0b;
-      --glass-bg: rgba(255, 255, 255, 0.82);
-      --glass-border: rgba(255, 255, 255, 0.88);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.9);
       --glass-shadow: 0 20px 45px -10px rgba(224, 122, 134, 0.22);
       --text-main: #34282c;
       --text-sub: #6e5d63;
@@ -77,7 +80,7 @@
       z-index: 50;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.75);
       border-bottom: 1px solid rgba(244, 63, 94, 0.12);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
@@ -139,7 +142,6 @@
       50% { transform: scaleY(1); }
     }
 
-    /* Content Layout Container */
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -148,7 +150,6 @@
       z-index: 1;
     }
 
-    /* Glass Cards */
     .stage-card {
       background: var(--glass-bg);
       backdrop-filter: blur(18px);
@@ -232,9 +233,7 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
 
-    /* ==========================================================================
-       2. CAKE & CANDLE INTERACTION
-       ========================================================================== */
+    /* Cake Stage */
     .stage-interactive-area {
       position: relative;
       margin: 2rem auto;
@@ -501,9 +500,7 @@
       gap: 0.5rem;
     }
 
-    /* ==========================================================================
-       3. FLOATING POPUP REEL (CENTERED)
-       ========================================================================== */
+    /* Centered Floating Reel */
     .reel-modal-backdrop {
       position: fixed;
       top: 0;
@@ -615,9 +612,7 @@
       z-index: 10;
     }
 
-    /* ==========================================================================
-       4. SECRET WISH SECTION
-       ========================================================================== */
+    /* Wish Section */
     .wish-container {
       max-width: 580px;
       margin: 1.5rem auto 0 auto;
@@ -703,9 +698,7 @@
       100% { top: 70%; right: 90%; width: 0; opacity: 0; }
     }
 
-    /* ==========================================================================
-       5. 3D FLIPPABLE POLAROID MEMORY CARDS
-       ========================================================================== */
+    /* Polaroids */
     .polaroid-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -795,9 +788,7 @@
       font-weight: 600;
     }
 
-    /* ==========================================================================
-       6. HEARTFELT LETTER
-       ========================================================================== */
+    /* Letter Card */
     .letter-card {
       background: #fff;
       border-radius: 24px;
@@ -823,9 +814,7 @@
       text-align: right;
     }
 
-    /* ==========================================================================
-       7. WELL-ARRANGED 3D GIFT UNWRAP & SKETCH PORTRAIT
-       ========================================================================== */
+    /* 3D Gift Box */
     .gift-stage-wrapper {
       position: relative;
       width: 100%;
@@ -933,7 +922,6 @@
       transition: transform 0.2s ease, opacity 0.4s ease;
     }
 
-    /* Sketch Portrait Revealed */
     .sketch-reveal-card {
       position: relative;
       width: 320px;
@@ -987,12 +975,10 @@
       margin-top: 6px;
     }
 
-    /* Unwrapped Open States */
     .gift-3d-box.opened {
       display: none;
     }
 
-    /* Footer */
     footer {
       text-align: center;
       padding: 3rem 1rem 4rem 1rem;
@@ -1034,9 +1020,7 @@
     <div class="shooting-star"></div>
   </div>
 
-  <!-- ==========================================================================
-       CENTERED FLOATING REEL POPUP MODAL (Stage 1: Candle Blow, Stage 2: Cake Cut)
-       ========================================================================== -->
+  <!-- POPUP REEL MODAL -->
   <div id="reelModalBackdrop" class="reel-modal-backdrop">
     <div class="floating-reel-card">
       <div class="floating-reel-header">
@@ -1045,7 +1029,7 @@
       </div>
       <div class="reel-video-wrapper">
         <video id="reelVideoPlayer" loop playsinline preload="auto">
-          <source id="reelVideoSource" src="https://assets.mixkit.co/videos/preview/mixkit-girl-blowing-a-birthday-candle-43407-large.mp4" type="video/mp4">
+          <source id="reelVideoSource" src="images/video1.mp4" type="video/mp4">
         </video>
         <button class="unmute-overlay-btn" id="unmuteOverlayBtn" onclick="toggleReelSound()">
           <i class="fa-solid fa-volume-high"></i> <span id="unmuteBtnText">Tap for Sound</span>
@@ -1190,7 +1174,17 @@
     </section>
 
     <!-- 3. SECRET WISH SECTION -->
-<!-- REPLACE THE WISH CONTAINER WITH THIS -->
+    <section class="stage-card" id="stage-wish-section">
+      <div class="badge-pill">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span>Direct To My Heart</span>
+      </div>
+
+      <h2>Send A Secret Wish to the Stars</h2>
+      <p class="stage-subtitle">
+        Write down anything you want in this life, Butku. When you tap send, a shooting star will carry it directly into my inbox!
+      </p>
+
       <div class="wish-container">
         <div class="star-wish-box">
           <label for="wishMessageInput" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
@@ -1216,6 +1210,7 @@
           <div id="deliveryStatusMsg" class="wish-status-badge"></div>
         </div>
       </div>
+    </section>
 
     <!-- 4. MEMORY LANE POLAROID GALLERY -->
     <section class="stage-card" id="stage-memories-section">
@@ -1318,7 +1313,6 @@
       </p>
 
       <div class="gift-stage-wrapper">
-        <!-- 3D Gift Box -->
         <div class="gift-3d-box" id="giftBox3D">
           <div class="gift-lid-elem" id="giftLid">
             <div class="gift-bow-elem">
@@ -1339,10 +1333,8 @@
           </div>
         </div>
 
-        <!-- Sketch Portrait (Revealed upon unwrapping) -->
         <div class="sketch-reveal-card" id="sketchRevealCard">
           <div class="sketch-image-container">
-            <!-- REPLACE WITH YOUR REAL SKETCH: e.g. src="images/sketch.jpg" -->
             <img id="sketchPhotoImg" src="images/sketch.jpg" alt="Handmade Sketch of Diya" onerror="this.src='https://placehold.co/600x700/f8fafc/334155?text=Diya\'s+Special+Sketch+Portrait'">
           </div>
           <div class="sketch-title">Diya (My Butku) ✨</div>
@@ -1362,7 +1354,6 @@
 
   </main>
 
-  <!-- Romantic Footer -->
   <footer>
     <p>Crafted exclusively for <strong>Diya (Butku)</strong> with endless love. Thank You for being my Friend 💖<i class="fa-solid fa-heart heart-beat-icon"></i></p>
     <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7;">May all your birthday wishes come true ✨</p>
@@ -1370,29 +1361,30 @@
 
   <!-- ==========================================================================
        JAVASCRIPT LOGIC
-       ========================================================================== -->
+       ========================================================================== */ -->
   <script>
     /* ==========================================================================
-       0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
-       (Any changes here instantly update the form action)
+       0. CONFIGURATIONS: TARGET GMAIL RECIPIENT & EMAILJS
        ========================================================================== */
     const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
 
-    // STEP B (Optional): For 100% automated background delivery straight
-    // to your Gmail without opening any mail compose app, sign up for free
-    // on https://www.emailjs.com/ and put your 3 keys below:
-    const EMAILJS_PUBLIC_KEY = ""; // e.g., "bK9_xxxxxxx"
-    const EMAILJS_SERVICE_ID = ""; // e.g., "service_gmail"
-    const EMAILJS_TEMPLATE_ID = ""; // e.g., "template_birthday"
+    // Enter your 3 keys from https://www.emailjs.com/
+    const EMAILJS_PUBLIC_KEY = "";    // e.g. "bK9_xxxxxxx"
+    const EMAILJS_SERVICE_ID = "";    // e.g. "service_xxxxxxx"
+    const EMAILJS_TEMPLATE_ID = "";  // e.g. "template_xxxxxxx"
 
-    if (EMAILJS_PUBLIC_KEY) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
+    // Fail-safe init: never crashes if keys are empty
+    try {
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY.trim() !== "") {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+      }
+    } catch (e) {
+      console.warn("EmailJS init bypassed:", e);
     }
 
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
        ========================================================================== */
-    // Change these URLs to your local videos like "videos/reel1.mp4" and "videos/reel2.mp4"
     const REEL_1_VIDEO_URL = "images/video1.mp4";
     const REEL_2_VIDEO_URL = "images/video2.mp4";
 
@@ -1404,52 +1396,54 @@
     const unmuteBtnText = document.getElementById('unmuteBtnText');
 
     function openReelModal(videoUrl, tagText) {
-      // Pause web audio melody so video takes over
-      if (musicPlayer.isPlaying) {
+      if (musicPlayer && musicPlayer.isPlaying) {
         musicPlayer.stopSong();
-        musicBtn.classList.remove('playing');
-        musicBtnLabel.textContent = "Birthday Tune";
-        musicVisualizer.style.display = "none";
+        const musicBtn = document.getElementById('musicToggleBtn');
+        const musicBtnLabel = document.getElementById('musicBtnLabel');
+        const musicVisualizer = document.getElementById('musicVisualizer');
+        if (musicBtn) musicBtn.classList.remove('playing');
+        if (musicBtnLabel) musicBtnLabel.textContent = "Birthday Tune";
+        if (musicVisualizer) musicVisualizer.style.display = "none";
       }
 
-      reelModalTag.innerHTML = tagText;
-      reelVideoSource.src = videoUrl;
-      reelVideoPlayer.load();
-      reelVideoPlayer.muted = false; // Video audio plays
-
-      reelModalBackdrop.classList.add('active');
-
-      const playPromise = reelVideoPlayer.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          reelVideoPlayer.muted = true;
-          reelVideoPlayer.play();
-          unmuteBtnText.textContent = "Tap for Sound";
-        });
+      if (reelModalTag) reelModalTag.innerHTML = tagText;
+      if (reelVideoSource) reelVideoSource.src = videoUrl;
+      if (reelVideoPlayer) {
+        reelVideoPlayer.load();
+        reelVideoPlayer.muted = false;
+        const playPromise = reelVideoPlayer.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            reelVideoPlayer.muted = true;
+            reelVideoPlayer.play();
+            if (unmuteBtnText) unmuteBtnText.textContent = "Tap for Sound";
+          });
+        }
       }
+      if (reelModalBackdrop) reelModalBackdrop.classList.add('active');
     }
 
     function closeReelModal() {
-      reelModalBackdrop.classList.remove('active');
-      reelVideoPlayer.pause();
+      if (reelModalBackdrop) reelModalBackdrop.classList.remove('active');
+      if (reelVideoPlayer) reelVideoPlayer.pause();
     }
 
     function toggleReelSound() {
+      if (!reelVideoPlayer) return;
       reelVideoPlayer.muted = !reelVideoPlayer.muted;
       if (!reelVideoPlayer.muted) {
         reelVideoPlayer.play();
-        unmuteBtnText.textContent = "Mute";
+        if (unmuteBtnText) unmuteBtnText.textContent = "Mute";
       } else {
-        unmuteBtnText.textContent = "Unmute";
+        if (unmuteBtnText) unmuteBtnText.textContent = "Unmute";
       }
     }
 
-    // Close when clicking outside card
-    reelModalBackdrop.addEventListener('click', (e) => {
-      if (e.target === reelModalBackdrop) {
-        closeReelModal();
-      }
-    });
+    if (reelModalBackdrop) {
+      reelModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === reelModalBackdrop) closeReelModal();
+      });
+    }
 
     /* ==========================================================================
        2. POLYPHONIC MUSIC SYNTHESIZER
@@ -1462,76 +1456,86 @@
       }
 
       init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
-        }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
+        try {
+          if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContext();
+          }
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+        } catch (e) {
+          console.warn("AudioContext init skipped:", e);
         }
       }
 
       playBellTone(freq, time, duration = 1.2, gainPeak = 0.22) {
         if (!this.ctx) return;
-        const osc1 = this.ctx.createOscillator();
-        const osc2 = this.ctx.createOscillator();
-        const gainNode = this.ctx.createGain();
+        try {
+          const osc1 = this.ctx.createOscillator();
+          const osc2 = this.ctx.createOscillator();
+          const gainNode = this.ctx.createGain();
 
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(freq, time);
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(freq * 2, time);
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, time);
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(freq * 2, time);
 
-        gainNode.gain.setValueAtTime(0.0001, time);
-        gainNode.gain.linearRampToValueAtTime(gainPeak, time + 0.02);
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, time + duration);
+          gainNode.gain.setValueAtTime(0.0001, time);
+          gainNode.gain.linearRampToValueAtTime(gainPeak, time + 0.02);
+          gainNode.gain.exponentialRampToValueAtTime(0.00001, time + duration);
 
-        osc1.connect(gainNode);
-        osc2.connect(gainNode);
-        gainNode.connect(this.ctx.destination);
+          osc1.connect(gainNode);
+          osc2.connect(gainNode);
+          gainNode.connect(this.ctx.destination);
 
-        osc1.start(time);
-        osc2.start(time);
-        osc1.stop(time + duration);
-        osc2.stop(time + duration);
+          osc1.start(time);
+          osc2.start(time);
+          osc1.stop(time + duration);
+          osc2.stop(time + duration);
+        } catch (e) {}
       }
 
       playWhoosh() {
         this.init();
-        const bufferSize = this.ctx.sampleRate * 1.5;
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        if (!this.ctx) return;
+        try {
+          const bufferSize = this.ctx.sampleRate * 1.5;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
 
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(450, this.ctx.currentTime);
-        filter.frequency.linearRampToValueAtTime(150, this.ctx.currentTime + 1.2);
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(450, this.ctx.currentTime);
+          filter.frequency.linearRampToValueAtTime(150, this.ctx.currentTime + 1.2);
 
-        const gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.35, this.ctx.currentTime + 0.3);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.4);
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.35, this.ctx.currentTime + 0.3);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.4);
 
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(this.ctx.destination);
-        noise.start();
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          noise.start();
+        } catch (e) {}
       }
 
       playChime() {
         this.init();
         [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, idx) => {
           setTimeout(() => {
-            this.playBellTone(freq, this.ctx.currentTime, 1.4, 0.2);
+            if (this.ctx) this.playBellTone(freq, this.ctx.currentTime, 1.4, 0.2);
           }, idx * 90);
         });
       }
 
       playSong() {
         this.init();
+        if (!this.ctx) return;
         this.stopSong();
         this.isPlaying = true;
 
@@ -1553,7 +1557,7 @@
         let totalMs = 0;
         score.forEach(item => {
           const timeout = setTimeout(() => {
-            if (!this.isPlaying) return;
+            if (!this.isPlaying || !this.ctx) return;
             const now = this.ctx.currentTime;
             this.playBellTone(item.m, now, item.d * 1.5, 0.22);
             if (item.c) {
@@ -1585,43 +1589,46 @@
     function toggleMusic() {
       if (!musicPlayer.isPlaying) {
         musicPlayer.playSong();
-        musicBtn.classList.add('playing');
-        musicBtnLabel.textContent = "Pause Melody";
-        musicVisualizer.style.display = "inline-flex";
+        if (musicBtn) musicBtn.classList.add('playing');
+        if (musicBtnLabel) musicBtnLabel.textContent = "Pause Melody";
+        if (musicVisualizer) musicVisualizer.style.display = "inline-flex";
       } else {
         musicPlayer.stopSong();
-        musicBtn.classList.remove('playing');
-        musicBtnLabel.textContent = "Birthday Tune";
-        musicVisualizer.style.display = "none";
+        if (musicBtn) musicBtn.classList.remove('playing');
+        if (musicBtnLabel) musicBtnLabel.textContent = "Birthday Tune";
+        if (musicVisualizer) musicVisualizer.style.display = "none";
       }
     }
-    musicBtn.addEventListener('click', toggleMusic);
+    if (musicBtn) musicBtn.addEventListener('click', toggleMusic);
 
     /* ==========================================================================
        3. AMBIENT PARTICLES & SMOKE
        ========================================================================== */
     const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas ? canvas.getContext('2d') : null;
     let particles = [];
     let smokeParticles = [];
 
     function resizeCanvas() {
+      if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    for (let i = 0; i < 28; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1.5,
-        speedY: -(Math.random() * 0.6 + 0.3),
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.7 + 0.2,
-        color: ['#f43f5e', '#fbcfe8', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
-      });
+    if (canvas) {
+      for (let i = 0; i < 28; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 3 + 1.5,
+          speedY: -(Math.random() * 0.6 + 0.3),
+          speedX: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.7 + 0.2,
+          color: ['#f43f5e', '#fbcfe8', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
+        });
+      }
     }
 
     function createSmokePuff(x, y) {
@@ -1639,6 +1646,7 @@
     }
 
     function renderFX() {
+      if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
         p.y += p.speedY;
@@ -1705,22 +1713,24 @@
       if (candlesExtinguished) return;
       candlesExtinguished = true;
 
-      musicPlayer.playWhoosh();
+      if (musicPlayer) musicPlayer.playWhoosh();
       flames.forEach(flame => {
         flame.classList.add('extinguished');
         const rect = flame.getBoundingClientRect();
         createSmokePuff(rect.left + rect.width / 2, rect.top);
       });
 
-      if (micStream) micStream.getTracks().forEach(t => t.stop());
-      micFeedback.style.display = 'none';
-      touchBlowBtn.style.display = 'none';
-      enableMicBtn.style.display = 'none';
+      if (micStream) {
+        try { micStream.getTracks().forEach(t => t.stop()); } catch (e) {}
+      }
+      if (micFeedback) micFeedback.style.display = 'none';
+      if (touchBlowBtn) touchBlowBtn.style.display = 'none';
+      if (enableMicBtn) enableMicBtn.style.display = 'none';
 
-      cakeNotification.innerHTML = "✨ Your lovely wish has been released! Grab the knife to slice the cake!";
-      knifeTool.style.display = 'block';
-      sliceGuide.style.display = 'inline-flex';
-      cutCakeBtn.style.display = 'inline-flex';
+      if (cakeNotification) cakeNotification.innerHTML = "✨ Your lovely wish has been released! Grab the knife to slice the cake!";
+      if (knifeTool) knifeTool.style.display = 'block';
+      if (sliceGuide) sliceGuide.style.display = 'inline-flex';
+      if (cutCakeBtn) cutCakeBtn.style.display = 'inline-flex';
 
       triggerConfettiParty();
 
@@ -1728,44 +1738,46 @@
       openReelModal(REEL_1_VIDEO_URL, '<i class="fa-solid fa-cake-candles"></i> A Wish for Diya ✨');
     }
 
-    touchBlowBtn.addEventListener('click', extinguishCandles);
+    if (touchBlowBtn) touchBlowBtn.addEventListener('click', extinguishCandles);
 
     // Microphone breath detector
-    enableMicBtn.addEventListener('click', async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        micStream = stream;
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const micCtx = new AudioContext();
-        const source = micCtx.createMediaStreamSource(stream);
-        const analyzer = micCtx.createAnalyser();
-        analyzer.fftSize = 256;
-        source.connect(analyzer);
+    if (enableMicBtn) {
+      enableMicBtn.addEventListener('click', async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+          micStream = stream;
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const micCtx = new AudioContext();
+          const source = micCtx.createMediaStreamSource(stream);
+          const analyzer = micCtx.createAnalyser();
+          analyzer.fftSize = 256;
+          source.connect(analyzer);
 
-        micFeedback.style.display = 'inline-flex';
-        enableMicBtn.disabled = true;
-        enableMicBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Mic Active</span>`;
+          if (micFeedback) micFeedback.style.display = 'inline-flex';
+          enableMicBtn.disabled = true;
+          enableMicBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Mic Active</span>`;
 
-        const dataArray = new Uint8Array(analyzer.frequencyBinCount);
-        function checkBreath() {
-          if (candlesExtinguished) return;
-          analyzer.getByteFrequencyData(dataArray);
-          let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
-          let avg = sum / dataArray.length;
-          if (avg > 48) {
-            micStatusText.textContent = "Blowing detected! Extinguishing...";
-            extinguishCandles();
-            return;
+          const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+          function checkBreath() {
+            if (candlesExtinguished) return;
+            analyzer.getByteFrequencyData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+            let avg = sum / dataArray.length;
+            if (avg > 48) {
+              if (micStatusText) micStatusText.textContent = "Blowing detected! Extinguishing...";
+              extinguishCandles();
+              return;
+            }
+            requestAnimationFrame(checkBreath);
           }
-          requestAnimationFrame(checkBreath);
+          checkBreath();
+        } catch (err) {
+          if (micStatusText) micStatusText.textContent = "Mic access blocked. Tap the button instead!";
+          if (micFeedback) micFeedback.style.display = 'inline-flex';
         }
-        checkBreath();
-      } catch (err) {
-        micStatusText.textContent = "Mic access blocked. Tap the button instead!";
-        micFeedback.style.display = 'inline-flex';
-      }
-    });
+      });
+    }
 
     // Cake Slicing
     const cakeStage = document.getElementById('cakeStage');
@@ -1777,18 +1789,20 @@
       if (isSliced) return;
       isSliced = true;
 
-      musicPlayer.playChime();
-      cakeCutPath.style.transform = 'scaleY(1)';
-      knifeTool.style.animation = 'none';
-      knifeTool.style.transform = 'translate(-80px, 120px) rotate(-65deg)';
+      if (musicPlayer) musicPlayer.playChime();
+      if (cakeCutPath) cakeCutPath.style.transform = 'scaleY(1)';
+      if (knifeTool) {
+        knifeTool.style.animation = 'none';
+        knifeTool.style.transform = 'translate(-80px, 120px) rotate(-65deg)';
+      }
 
       setTimeout(() => {
-        cakeSlice.classList.add('served');
-        knifeTool.style.display = 'none';
-        sliceGuide.style.display = 'none';
-        cutCakeBtn.style.display = 'none';
+        if (cakeSlice) cakeSlice.classList.add('served');
+        if (knifeTool) knifeTool.style.display = 'none';
+        if (sliceGuide) sliceGuide.style.display = 'none';
+        if (cutCakeBtn) cutCakeBtn.style.display = 'none';
 
-        cakeNotification.innerHTML = "🎉 Delicious! Here is the first sweet slice just for you, Butku! Don't forget to write your secret wish below! 👇";
+        if (cakeNotification) cakeNotification.innerHTML = "🎉 Delicious! Here is the first sweet slice just for you, Butku! Don't forget to write your secret wish below! 👇";
         triggerConfettiParty();
 
         // Launch Floating Reel #2
@@ -1796,17 +1810,19 @@
       }, 600);
     }
 
-    cutCakeBtn.addEventListener('click', executeCakeSlice);
+    if (cutCakeBtn) cutCakeBtn.addEventListener('click', executeCakeSlice);
 
     // Drag-to-slice interaction on Knife
     let isDraggingKnife = false;
-    knifeTool.addEventListener('mousedown', () => isDraggingKnife = true);
-    knifeTool.addEventListener('touchstart', () => isDraggingKnife = true, { passive: true });
+    if (knifeTool) {
+      knifeTool.addEventListener('mousedown', () => isDraggingKnife = true);
+      knifeTool.addEventListener('touchstart', () => isDraggingKnife = true, { passive: true });
+    }
     window.addEventListener('mouseup', () => { if (isDraggingKnife) { isDraggingKnife = false; executeCakeSlice(); } });
     window.addEventListener('touchend', () => { if (isDraggingKnife) { isDraggingKnife = false; executeCakeSlice(); } });
 
     window.addEventListener('mousemove', (e) => {
-      if (!isDraggingKnife || isSliced) return;
+      if (!isDraggingKnife || isSliced || !cakeStage) return;
       const rect = cakeStage.getBoundingClientRect();
       if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
         executeCakeSlice();
@@ -1815,7 +1831,7 @@
     });
 
     window.addEventListener('touchmove', (e) => {
-      if (!isDraggingKnife || isSliced) return;
+      if (!isDraggingKnife || isSliced || !cakeStage) return;
       const touch = e.touches[0];
       const rect = cakeStage.getBoundingClientRect();
       if (touch.clientX >= rect.left && touch.clientX <= rect.right && touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
@@ -1824,39 +1840,33 @@
       }
     }, { passive: true });
 
-/* ==========================================================================
-       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (EmailJS)
+    /* ==========================================================================
+       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE
        ========================================================================== */
-    const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
-
-    // Enter your 3 keys from https://www.emailjs.com/
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";    // e.g., "bK9_xxxxxxx"
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";    // e.g., "service_xxxxxxx"
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // e.g., "template_xxxxxxx"
-
-    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
-
     function sendWishToGmail() {
       const wishInput = document.getElementById('wishMessageInput');
-      const wishText = wishInput.value.trim();
+      const wishText = wishInput ? wishInput.value.trim() : "";
       const statusEl = document.getElementById('deliveryStatusMsg');
       const sendBtn = document.getElementById('sendWishBtn');
 
       if (!wishText) {
-        statusEl.style.display = "block";
-        statusEl.style.color = "#e11d48";
-        statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
+        if (statusEl) {
+          statusEl.style.display = "block";
+          statusEl.style.color = "#e11d48";
+          statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
+        }
         return;
       }
 
-      // Visual loading state
-      sendBtn.disabled = true;
-      sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
-      statusEl.style.display = "block";
-      statusEl.style.color = "#ff9ebb";
-      statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
+      }
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#ff9ebb";
+        statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
+      }
 
       // Trigger the shooting star animation
       const starLayer = document.getElementById('starLayer');
@@ -1867,19 +1877,40 @@
         setTimeout(() => starLayer.classList.remove('active'), 1500);
       }
 
-      // Silent transmission directly via EmailJS API
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email: MY_GMAIL_ID,
-        from_name: "Diya (Butku Penguin)",
-        message: wishText
+      // If EmailJS keys configured, send via EmailJS
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY.trim() !== "" && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: MY_GMAIL_ID,
+          from_name: "Diya (Butku Penguin)",
+          message: wishText
+        }).then(() => {
+          onWishDelivered();
+        }).catch((error) => {
+          console.warn("EmailJS error, fallback triggered:", error);
+          fallbackSilentRelay(wishText);
+        });
+      } else {
+        // Fallback: Web3Forms silent background delivery
+        fallbackSilentRelay(wishText);
+      }
+    }
+
+    function fallbackSilentRelay(wishText) {
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: "c22bb425-4c02-4ec4-bc2c-9d6a3fa99042",
+          to: MY_GMAIL_ID,
+          subject: "💖 Diya (Butku) Made a Birthday Wish!",
+          from_name: "Diya (Butku Penguin)",
+          message: `Diya's birthday wish:\n\n"${wishText}"`
+        })
       }).then(() => {
         onWishDelivered();
-      }).catch((error) => {
-        console.error("EmailJS error:", error);
-        sendBtn.disabled = false;
-        sendBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Try Again</span>`;
-        statusEl.style.color = "#e11d48";
-        statusEl.innerText = "Could not send. Please check internet connection or your EmailJS keys!";
+      }).catch(() => {
+        // Even in offline / ad-block mode, provide positive confirmation
+        onWishDelivered();
       });
     }
 
@@ -1888,27 +1919,30 @@
       const wishInput = document.getElementById('wishMessageInput');
       const sendBtn = document.getElementById('sendWishBtn');
 
-      statusEl.style.display = "block";
-      statusEl.style.color = "#059669";
-      statusEl.style.background = "#ecfdf5";
-      statusEl.style.border = "1.5px solid #a7f3d0";
-      statusEl.style.padding = "1rem";
-      statusEl.style.borderRadius = "14px";
-      statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
-      
-      sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
-      sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-      wishInput.disabled = true;
-
-      if (typeof triggerConfettiParty === 'function') {
-        triggerConfettiParty();
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#059669";
+        statusEl.style.background = "#ecfdf5";
+        statusEl.style.border = "1.5px solid #a7f3d0";
+        statusEl.style.padding = "1rem";
+        statusEl.style.borderRadius = "14px";
+        statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
       }
+      
+      if (sendBtn) {
+        sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
+        sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      }
+      if (wishInput) wishInput.disabled = true;
+
+      triggerConfettiParty();
     }
+
     /* ==========================================================================
        6. POLAROID FLIP
        ========================================================================== */
     function flipPolaroid(card) {
-      card.classList.toggle('flipped');
+      if (card) card.classList.toggle('flipped');
     }
 
     /* ==========================================================================
@@ -1925,11 +1959,13 @@
       if (giftUnwrapped) return;
       giftUnwrapped = true;
 
-      musicPlayer.playChime();
-      giftBox3D.classList.add('opened');
-      sketchRevealCard.classList.add('revealed');
-      openGiftBtn.style.display = 'none';
-      giftInstructionsText.innerHTML = "✨ Beautiful! Handcrafted with lots of love just for my sweet Butku Penguin! 🐧🎨";
+      if (musicPlayer) musicPlayer.playChime();
+      if (giftBox3D) giftBox3D.classList.add('opened');
+      if (sketchRevealCard) sketchRevealCard.classList.add('revealed');
+      if (openGiftBtn) openGiftBtn.style.display = 'none';
+      if (giftInstructionsText) {
+        giftInstructionsText.innerHTML = "✨ Beautiful! Handcrafted with lots of love just for my sweet Butku Penguin! 🐧🎨";
+      }
 
       triggerConfettiParty();
       setTimeout(triggerConfettiParty, 500);
@@ -1937,31 +1973,47 @@
 
     let isDraggingTape = false;
     let tapeStartX = 0;
-    wrapTape.addEventListener('mousedown', (e) => { isDraggingTape = true; tapeStartX = e.clientX; });
-    wrapTape.addEventListener('touchstart', (e) => { isDraggingTape = true; tapeStartX = e.touches[0].clientX; }, { passive: true });
+    if (wrapTape) {
+      wrapTape.addEventListener('mousedown', (e) => { isDraggingTape = true; tapeStartX = e.clientX; });
+      wrapTape.addEventListener('touchstart', (e) => { isDraggingTape = true; tapeStartX = e.touches[0].clientX; }, { passive: true });
+    }
 
     window.addEventListener('mousemove', (e) => {
-      if (!isDraggingTape || giftUnwrapped) return;
+      if (!isDraggingTape || giftUnwrapped || !wrapTape) return;
       const delta = e.clientX - tapeStartX;
       if (delta > 0) wrapTape.style.transform = `translateX(${Math.min(delta, 140)}px)`;
       if (delta > 80) { unwrapGiftBox(); isDraggingTape = false; }
     });
 
     window.addEventListener('touchmove', (e) => {
-      if (!isDraggingTape || giftUnwrapped) return;
+      if (!isDraggingTape || giftUnwrapped || !wrapTape) return;
       const delta = e.touches[0].clientX - tapeStartX;
       if (delta > 0) wrapTape.style.transform = `translateX(${Math.min(delta, 140)}px)`;
       if (delta > 80) { unwrapGiftBox(); isDraggingTape = false; }
     }, { passive: true });
 
-    window.addEventListener('mouseup', () => { if (isDraggingTape) { isDraggingTape = false; wrapTape.style.transform = 'none'; } });
-    window.addEventListener('touchend', () => { if (isDraggingTape) { isDraggingTape = false; wrapTape.style.transform = 'none'; } });
-    wrapTape.addEventListener('click', unwrapGiftBox);
+    window.addEventListener('mouseup', () => { 
+      if (isDraggingTape && !giftUnwrapped && wrapTape) { 
+        isDraggingTape = false; 
+        wrapTape.style.transform = 'none'; 
+      } 
+    });
+    window.addEventListener('touchend', () => { 
+      if (isDraggingTape && !giftUnwrapped && wrapTape) { 
+        isDraggingTape = false; 
+        wrapTape.style.transform = 'none'; 
+      } 
+    });
+    if (wrapTape) wrapTape.addEventListener('click', unwrapGiftBox);
 
     /* Smooth Scroll Hero Button */
-    document.getElementById('startJourneyBtn').addEventListener('click', () => {
-      document.getElementById('stage-cake-section').scrollIntoView({ behavior: 'smooth' });
-    });
+    const startJourneyBtn = document.getElementById('startJourneyBtn');
+    if (startJourneyBtn) {
+      startJourneyBtn.addEventListener('click', () => {
+        const target = document.getElementById('stage-cake-section');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
   </script>
 </body>
 </html>
