@@ -15,7 +15,7 @@
   
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     /* ==========================================================================
        1. GLOBAL THEME, TOKENS & RESET
@@ -1190,54 +1190,32 @@
     </section>
 
     <!-- 3. SECRET WISH SECTION -->
-    <section class="stage-card" id="stage-wish-section">
-      <div class="badge-pill">
-        <i class="fa-solid fa-envelope-open-text"></i>
-        <span>Direct To My Heart</span>
-      </div>
-
-      <h2>Send A Secret Wish to the Stars</h2>
-      <p class="stage-subtitle">
-        Write down anything you want in this life, Butku. When you tap send, a shooting star will carry it directly into my inbox!
-      </p>
-
+<!-- REPLACE THE WISH CONTAINER WITH THIS -->
       <div class="wish-container">
         <div class="star-wish-box">
-          <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
+          <label for="wishMessageInput" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
+            ✨ Diya's Heartfelt Wish:
+          </label>
+          <textarea 
+            id="wishMessageInput" 
+            placeholder="My secret wish this year is..." 
+            required></textarea>
 
-          <!-- Direct FormSubmit pipeline to your Gmail (URL is set automatically by TARGET_GMAIL in JS) -->
-          <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
-            <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="Sender" value="Diya (Butku)">
+          <div class="wish-helper-text">
+            <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
+            <span>This note travels directly into Rakesh's inbox.</span>
+          </div>
 
-            <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
-              ✨ Diya's Heartfelt Wish:
-            </label>
-            <textarea 
-              id="wishContent" 
-              name="Birthday_Wish" 
-              placeholder="My secret wish this year is..." 
-              required></textarea>
+          <div style="margin-top: 1.4rem;">
+            <button type="button" id="sendWishBtn" class="btn-action" onclick="sendWishToGmail()" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send Wish to Universe 🌠</span>
+            </button>
+          </div>
 
-            <div class="wish-helper-text">
-              <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
-              <span>This note is encrypted with love and sent only to me.</span>
-            </div>
-
-            <div style="margin-top: 1.4rem;">
-              <button type="submit" id="sendWishBtn" class="btn-action" style="width: 100%;">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Send Wish to Universe 🌠</span>
-              </button>
-            </div>
-          </form>
-
-          <div id="wishStatusMessage" class="wish-status-badge"></div>
+          <div id="deliveryStatusMsg" class="wish-status-badge"></div>
         </div>
       </div>
-    </section>
 
     <!-- 4. MEMORY LANE POLAROID GALLERY -->
     <section class="stage-card" id="stage-memories-section">
@@ -1846,56 +1824,85 @@
       }
     }, { passive: true });
 
-    /* ==========================================================================
-       5. WISH SUBMISSION
+/* ==========================================================================
+       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (EmailJS)
        ========================================================================== */
-function sendWishToGmail() {
-      const wishText = document.getElementById('wishMessageInput').value.trim();
+    const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
+
+    // Enter your 3 keys from https://www.emailjs.com/
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";    // e.g., "bK9_xxxxxxx"
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";    // e.g., "service_xxxxxxx"
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // e.g., "template_xxxxxxx"
+
+    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    function sendWishToGmail() {
+      const wishInput = document.getElementById('wishMessageInput');
+      const wishText = wishInput.value.trim();
       const statusEl = document.getElementById('deliveryStatusMsg');
+      const sendBtn = document.getElementById('sendWishBtn');
 
       if (!wishText) {
-        statusEl.style.color = "#ffd166";
+        statusEl.style.display = "block";
+        statusEl.style.color = "#e11d48";
         statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
         return;
       }
 
+      // Visual loading state
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
+      statusEl.style.display = "block";
       statusEl.style.color = "#ff9ebb";
       statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
 
-      // Method 1: Invisible direct delivery via EmailJS (if credentials provided)
-      if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email: MY_GMAIL_ID,
-          from_name: "Diya (Butku Penguin)",
-          message: wishText
-        }).then(() => {
-          onWishDelivered();
-        }).catch(() => {
-          fallbackDirectGmailWindow(wishText);
-        });
-      } else {
-        // Method 2: Direct Gmail compose link (works on Android, iOS & Desktop without any server)
-        fallbackDirectGmailWindow(wishText);
+      // Trigger the shooting star animation
+      const starLayer = document.getElementById('starLayer');
+      if (starLayer) {
+        starLayer.classList.remove('active');
+        void starLayer.offsetWidth;
+        starLayer.classList.add('active');
+        setTimeout(() => starLayer.classList.remove('active'), 1500);
       }
-    }
 
-    function fallbackDirectGmailWindow(wishContent) {
-      const subject = encodeURIComponent("Diya's Birthday Wish ✨");
-      const body = encodeURIComponent(`Hey!\n\nHere is my birthday wish:\n"${wishContent}"\n\nWith all my love,\nDiya (Butku Penguin) 🐧💖`);
-      
-      // Google Mail web & app compose link
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${MY_GMAIL_ID}&su=${subject}&body=${body}`;
-      
-      window.open(gmailUrl, '_blank');
-      onWishDelivered();
+      // Silent transmission directly via EmailJS API
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email: MY_GMAIL_ID,
+        from_name: "Diya (Butku Penguin)",
+        message: wishText
+      }).then(() => {
+        onWishDelivered();
+      }).catch((error) => {
+        console.error("EmailJS error:", error);
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Try Again</span>`;
+        statusEl.style.color = "#e11d48";
+        statusEl.innerText = "Could not send. Please check internet connection or your EmailJS keys!";
+      });
     }
 
     function onWishDelivered() {
       const statusEl = document.getElementById('deliveryStatusMsg');
-      statusEl.style.color = "#06d6a0";
-      statusEl.innerText = "✨ Your wish is on its way to my Gmail! May every single word come true! 💖";
-      document.getElementById('wishMessageInput').value = "";
-      triggerConfetti(65);
+      const wishInput = document.getElementById('wishMessageInput');
+      const sendBtn = document.getElementById('sendWishBtn');
+
+      statusEl.style.display = "block";
+      statusEl.style.color = "#059669";
+      statusEl.style.background = "#ecfdf5";
+      statusEl.style.border = "1.5px solid #a7f3d0";
+      statusEl.style.padding = "1rem";
+      statusEl.style.borderRadius = "14px";
+      statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
+      
+      sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
+      sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      wishInput.disabled = true;
+
+      if (typeof triggerConfettiParty === 'function') {
+        triggerConfettiParty();
+      }
     }
     /* ==========================================================================
        6. POLAROID FLIP
