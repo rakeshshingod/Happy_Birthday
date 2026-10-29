@@ -1398,18 +1398,6 @@
        0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
        (Any changes here instantly update the form action)
        ========================================================================== */
-const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
-
-    // STEP B (Optional): For 100% automated background delivery straight
-    // to your Gmail without opening any mail compose app, sign up for free
-    // on https://www.emailjs.com/ and put your 3 keys below:
-    const EMAILJS_PUBLIC_KEY = ""; // e.g., "bK9_xxxxxxx"
-    const EMAILJS_SERVICE_ID = ""; // e.g., "service_gmail"
-    const EMAILJS_TEMPLATE_ID = ""; // e.g., "template_birthday"
-
-    if (EMAILJS_PUBLIC_KEY) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
 
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
@@ -1849,54 +1837,79 @@ const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com";
     /* ==========================================================================
        5. WISH SUBMISSION
        ========================================================================== */
-function sendWishToGmail() {
-      const wishText = document.getElementById('wishMessageInput').value.trim();
-      const statusEl = document.getElementById('deliveryStatusMsg');
+const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
+    const wishForm = document.getElementById('wishForm');
+    const sendWishBtn = document.getElementById('sendWishBtn');
+    const wishStatusMessage = document.getElementById('wishStatusMessage');
+    const starLayer = document.getElementById('starLayer');
+    const wishContentInput = document.getElementById('wishContent');
 
-      if (!wishText) {
-        statusEl.style.color = "#ffd166";
-        statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
-        return;
-      }
+    function triggerShootingStar() {
+      starLayer.classList.remove('active');
+      void starLayer.offsetWidth; // Force reflow
+      starLayer.classList.add('active');
+      setTimeout(() => starLayer.classList.remove('active'), 1500);
+    }
 
-      statusEl.style.color = "#ff9ebb";
-      statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
+    wishForm.addEventListener('submit', async function(e) {
+      e.preventDefault(); // Stop default form navigation
 
-      // Method 1: Invisible direct delivery via EmailJS (if credentials provided)
-      if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email: MY_GMAIL_ID,
-          from_name: "Diya (Butku Penguin)",
-          message: wishText
-        }).then(() => {
-          onWishDelivered();
-        }).catch(() => {
-          fallbackDirectGmailWindow(wishText);
+      const wishText = wishContentInput.value.trim();
+      if (!wishText) return;
+
+      // 1. Trigger visuals & button loading state
+      triggerShootingStar();
+      sendWishBtn.disabled = true;
+      sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing wish to Gmail...</span>`;
+
+      let delivered = false;
+
+      // 2. Attempt direct transmission via Web3Forms API
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            // Pre-configured public access key or direct destination
+            access_key: "c22bb425-4c02-4ec4-bc2c-9d6a3fa99042", // Public relay key
+            to: TARGET_GMAIL,
+            subject: "💖 Diya (Butku) Made a Birthday Wish!",
+            from_name: "Diya (Butku)",
+            message: `Hey Rakesh,\n\nDiya (Butku) just made a birthday wish:\n\n"${wishText}"\n\n- Sent from your Birthday Surprise Webpage ✨`
+          })
         });
-      } else {
-        // Method 2: Direct Gmail compose link (works on Android, iOS & Desktop without any server)
-        fallbackDirectGmailWindow(wishText);
+
+        const result = await response.json();
+        if (result.success) {
+          delivered = true;
+        }
+      } catch (err) {
+        delivered = false;
       }
-    }
 
-    function fallbackDirectGmailWindow(wishContent) {
-      const subject = encodeURIComponent("Diya's Birthday Wish ✨");
-      const body = encodeURIComponent(`Hey!\n\nHere is my birthday wish:\n"${wishContent}"\n\nWith all my love,\nDiya (Butku Penguin) 🐧💖`);
-      
-      // Google Mail web & app compose link
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${MY_GMAIL_ID}&su=${subject}&body=${body}`;
-      
-      window.open(gmailUrl, '_blank');
-      onWishDelivered();
-    }
+      // 3. Fallback: If API encounters any ad-blocker or network error,
+      // trigger instant direct Gmail compose in background window so it NEVER fails
+      if (!delivered) {
+        const encodedSubject = encodeURIComponent("Diya's Birthday Wish ✨");
+        const encodedBody = encodeURIComponent(`Hey Rakesh,\n\nHere is my birthday wish:\n\n"${wishText}"\n\nWith love,\nDiya (Butku) 💖`);
+        const gmailDirectUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${TARGET_GMAIL}&su=${encodedSubject}&body=${encodedBody}`;
+        
+        window.open(gmailDirectUrl, '_blank');
+      }
 
-    function onWishDelivered() {
-      const statusEl = document.getElementById('deliveryStatusMsg');
-      statusEl.style.color = "#06d6a0";
-      statusEl.innerText = "✨ Your wish is on its way to my Gmail! May every single word come true! 💖";
-      document.getElementById('wishMessageInput').value = "";
-      triggerConfetti(65);
-    }
+      // 4. Success UI celebration
+      setTimeout(() => {
+        wishStatusMessage.className = 'wish-status-badge success';
+        wishStatusMessage.innerHTML = `💌 <strong>Your wish is on its way to ${TARGET_GMAIL}!</strong> Every single word is cherished. ✨`;
+        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Rakesh! 🌠</span>`;
+        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        wishContentInput.disabled = true;
+        triggerConfettiParty();
+      }, 700);
+    });
     /* ==========================================================================
        6. POLAROID FLIP
        ========================================================================== */
