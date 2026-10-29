@@ -1398,12 +1398,17 @@
        0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
        (Any changes here instantly update the form action)
        ========================================================================== */
-    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
+const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
 
-    // Dynamically wire the form to the target Gmail address
-    const wishFormElement = document.getElementById('wishForm');
-    if (wishFormElement) {
-      wishFormElement.action = `https://formsubmit.co/shingod.rakeshkumar@gmail.com`;
+    // STEP B (Optional): For 100% automated background delivery straight
+    // to your Gmail without opening any mail compose app, sign up for free
+    // on https://www.emailjs.com/ and put your 3 keys below:
+    const EMAILJS_PUBLIC_KEY = ""; // e.g., "bK9_xxxxxxx"
+    const EMAILJS_SERVICE_ID = ""; // e.g., "service_gmail"
+    const EMAILJS_TEMPLATE_ID = ""; // e.g., "template_birthday"
+
+    if (EMAILJS_PUBLIC_KEY) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
     }
 
     /* ==========================================================================
@@ -1844,31 +1849,54 @@
     /* ==========================================================================
        5. WISH SUBMISSION
        ========================================================================== */
-    const wishForm = document.getElementById('wishForm');
-    const sendWishBtn = document.getElementById('sendWishBtn');
-    const wishStatusMessage = document.getElementById('wishStatusMessage');
-    const starLayer = document.getElementById('starLayer');
-    const wishContentInput = document.getElementById('wishContent');
+function sendWishToGmail() {
+      const wishText = document.getElementById('wishMessageInput').value.trim();
+      const statusEl = document.getElementById('deliveryStatusMsg');
 
-    wishForm.addEventListener('submit', function() {
-      starLayer.classList.remove('active');
-      void starLayer.offsetWidth;
-      starLayer.classList.add('active');
-      setTimeout(() => starLayer.classList.remove('active'), 1500);
+      if (!wishText) {
+        statusEl.style.color = "#ffd166";
+        statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
+        return;
+      }
 
-      sendWishBtn.disabled = true;
-      sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
+      statusEl.style.color = "#ff9ebb";
+      statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
 
-      setTimeout(() => {
-        wishStatusMessage.className = 'wish-status-badge success';
-        wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
-        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
-        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-        wishContentInput.disabled = true;
-        triggerConfettiParty();
-      }, 900);
-    });
+      // Method 1: Invisible direct delivery via EmailJS (if credentials provided)
+      if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: MY_GMAIL_ID,
+          from_name: "Diya (Butku Penguin)",
+          message: wishText
+        }).then(() => {
+          onWishDelivered();
+        }).catch(() => {
+          fallbackDirectGmailWindow(wishText);
+        });
+      } else {
+        // Method 2: Direct Gmail compose link (works on Android, iOS & Desktop without any server)
+        fallbackDirectGmailWindow(wishText);
+      }
+    }
 
+    function fallbackDirectGmailWindow(wishContent) {
+      const subject = encodeURIComponent("Diya's Birthday Wish ✨");
+      const body = encodeURIComponent(`Hey!\n\nHere is my birthday wish:\n"${wishContent}"\n\nWith all my love,\nDiya (Butku Penguin) 🐧💖`);
+      
+      // Google Mail web & app compose link
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${MY_GMAIL_ID}&su=${subject}&body=${body}`;
+      
+      window.open(gmailUrl, '_blank');
+      onWishDelivered();
+    }
+
+    function onWishDelivered() {
+      const statusEl = document.getElementById('deliveryStatusMsg');
+      statusEl.style.color = "#06d6a0";
+      statusEl.innerText = "✨ Your wish is on its way to my Gmail! May every single word come true! 💖";
+      document.getElementById('wishMessageInput').value = "";
+      triggerConfetti(65);
+    }
     /* ==========================================================================
        6. POLAROID FLIP
        ========================================================================== */
