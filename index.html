@@ -135,7 +135,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 950px;
       margin: 0 auto;
       padding: 5.5rem 1.25rem 4rem 1.25rem;
       position: relative;
@@ -190,7 +190,7 @@
       color: var(--text-sub);
       font-size: 1.1rem;
       line-height: 1.75;
-      max-width: 620px;
+      max-width: 650px;
       margin: 1.25rem auto 1.75rem auto;
       font-weight: 400;
     }
@@ -806,7 +806,9 @@
       text-align: right;
     }
 
-    /* 3D Gift Box */
+    /* ==========================================================================
+       6. 3D GIFT STAGE, SKETCH & 5 NOVELS FLOATING SHELF
+       ========================================================================== */
     .gift-stage-wrapper {
       position: relative;
       width: 100%;
@@ -914,6 +916,26 @@
       transition: transform 0.2s ease, opacity 0.4s ease;
     }
 
+    .gift-3d-box.opened {
+      display: none;
+    }
+
+    /* Container revealed upon opening the box */
+    .surprise-unwrapped-container {
+      display: none;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .surprise-unwrapped-container.revealed {
+      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Sketch Portrait */
     .sketch-reveal-card {
       position: relative;
       width: 320px;
@@ -921,20 +943,10 @@
       background: #ffffff;
       padding: 16px 16px 24px 16px;
       border-radius: 16px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
       border: 1px solid #fbcfe8;
-      display: none;
-      opacity: 0;
-      transform: translateY(30px) scale(0.9);
-      transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      margin: 10px auto;
+      margin: 10px auto 2.5rem auto;
       text-align: center;
-    }
-
-    .sketch-reveal-card.revealed {
-      display: block;
-      opacity: 1;
-      transform: translateY(0) scale(1);
     }
 
     .sketch-image-container {
@@ -967,8 +979,221 @@
       margin-top: 6px;
     }
 
-    .gift-3d-box.opened {
-      display: none;
+    /* 5 Floating Novels Shelf */
+    .novels-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(254, 240, 138, 0.6);
+      border: 1px solid #facc15;
+      padding: 0.45rem 1.3rem;
+      border-radius: 50px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #854d0e;
+      margin-bottom: 1.2rem;
+    }
+
+    .novels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+      padding: 0.5rem;
+    }
+
+    .novel-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 0.85rem;
+      box-shadow: 0 12px 28px rgba(244, 63, 94, 0.15);
+      border: 1.5px solid rgba(254, 205, 211, 0.8);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      animation: novelFloat 3s infinite alternate ease-in-out;
+    }
+
+    .novel-card:nth-child(1) { animation-delay: 0s; }
+    .novel-card:nth-child(2) { animation-delay: 0.4s; }
+    .novel-card:nth-child(3) { animation-delay: 0.8s; }
+    .novel-card:nth-child(4) { animation-delay: 1.2s; }
+    .novel-card:nth-child(5) { animation-delay: 1.6s; }
+
+    @keyframes novelFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-9px); }
+    }
+
+    .novel-card:hover {
+      transform: translateY(-14px) scale(1.05);
+      box-shadow: 0 18px 36px rgba(244, 63, 94, 0.3);
+      border-color: var(--soft-rose);
+    }
+
+    .novel-cover-wrap {
+      width: 100%;
+      height: 195px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fdf2f8;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    }
+
+    .novel-cover-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .novel-name-tag {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #3b2a2d;
+      margin-top: 0.75rem;
+    }
+
+    .novel-read-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      color: var(--soft-rose);
+      font-weight: 700;
+      margin-top: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       7. IN-WEBSITE PDF READER & VIEWER MODAL
+       ========================================================================== */
+    .pdf-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      padding: 1rem;
+    }
+
+    .pdf-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pdf-viewer-card {
+      width: 900px;
+      height: 90vh;
+      max-width: 95vw;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.92);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .pdf-modal-backdrop.active .pdf-viewer-card {
+      transform: scale(1);
+    }
+
+    .pdf-header-bar {
+      padding: 0.9rem 1.4rem;
+      background: linear-gradient(135deg, #fff1f2, #fff);
+      border-bottom: 1px solid rgba(244, 63, 94, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .pdf-title-info {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #881337;
+    }
+
+    .pdf-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-download-pdf {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      padding: 0.45rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-download-pdf:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .close-pdf-btn {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--soft-rose);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .close-pdf-btn:hover {
+      background: var(--soft-rose);
+      color: #fff;
+    }
+
+    .pdf-frame-wrapper {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background: #f1f5f9;
+      position: relative;
+    }
+
+    .pdf-frame-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
     footer {
@@ -996,15 +1221,18 @@
       .stage-card { padding: 1.8rem 1rem; border-radius: 22px; margin-bottom: 2.2rem; }
       .highlight-name { font-size: 2.4rem; }
       .polaroid-grid { grid-template-columns: 1fr; max-width: 290px; margin: 0 auto; }
+      .novels-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .letter-card { padding: 1.6rem 1.2rem; }
       .letter-body { font-size: 1rem; line-height: 1.8; }
       .floating-reel-card { width: 280px; height: 480px; }
+      .pdf-viewer-card { height: 95vh; max-width: 98vw; }
+      .pdf-title-info { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Ambient FX Canvas -->
+  <!-- Background Ambient Canvas -->
   <canvas id="fx-canvas"></canvas>
 
   <!-- Shooting Star Animation Overlay -->
@@ -1026,6 +1254,28 @@
         <button class="unmute-overlay-btn" id="unmuteOverlayBtn" onclick="toggleReelSound()">
           <i class="fa-solid fa-volume-high"></i> <span id="unmuteBtnText">Tap for Sound</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-WEBSITE SCROLLABLE PDF READER MODAL -->
+  <div id="pdfModalBackdrop" class="pdf-modal-backdrop">
+    <div class="pdf-viewer-card">
+      <div class="pdf-header-bar">
+        <div class="pdf-title-info">
+          <i class="fa-solid fa-book-open" style="color: var(--soft-rose);"></i>
+          <span id="pdfBookTitle">Novel Reader</span>
+        </div>
+        <div class="pdf-actions">
+          <a id="pdfDownloadBtn" href="#" download class="btn-download-pdf">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            <span>Download PDF</span>
+          </a>
+          <button class="close-pdf-btn" onclick="closePdfReader()" title="Close Reader">&times;</button>
+        </div>
+      </div>
+      <div class="pdf-frame-wrapper">
+        <iframe id="pdfFrame" src="" title="PDF Reader"></iframe>
       </div>
     </div>
   </div>
@@ -1165,7 +1415,7 @@
       <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
     </section>
 
-    <!-- 3. SECRET WISH SECTION (POWERED BY FORMSPREE) -->
+    <!-- 3. SECRET WISH SECTION (FORMSPREE BACKEND) -->
     <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
@@ -1292,11 +1542,11 @@
       </div>
     </section>
 
-    <!-- 6. 3D GIFT & SKETCH PORTRAIT -->
+    <!-- 6. 3D GIFT BOX WITH SKETCH & 5 FLOATING NOVELS -->
     <section class="stage-card" id="stage-gift-section">
       <div class="badge-pill">
         <i class="fa-solid fa-gift"></i>
-        <span>One More Surprise For You</span>
+        <span>Grand Surprise For You</span>
       </div>
 
       <h2>A Special Gift For Butku 🎁</h2>
@@ -1305,6 +1555,7 @@
       </p>
 
       <div class="gift-stage-wrapper">
+        <!-- 3D Gift Box -->
         <div class="gift-3d-box" id="giftBox3D">
           <div class="gift-lid-elem" id="giftLid">
             <div class="gift-bow-elem">
@@ -1325,14 +1576,78 @@
           </div>
         </div>
 
-        <div class="sketch-reveal-card" id="sketchRevealCard">
-          <div class="sketch-image-container">
-            <img id="sketchPhotoImg" src="images/sketch.jpg" alt="Handmade Sketch of Diya" onerror="this.src='https://placehold.co/600x700/f8fafc/334155?text=Diya\'s+Special+Sketch+Portrait'">
+        <!-- Hidden container that bursts open upon unwrap -->
+        <div class="surprise-unwrapped-container" id="surpriseContainer">
+          
+          <!-- 1. The Sketch Portrait -->
+          <div class="sketch-reveal-card" id="sketchRevealCard">
+            <div class="sketch-image-container">
+              <img id="sketchPhotoImg" src="images/sketch.jpg" alt="Handmade Sketch of Diya" onerror="this.src='https://placehold.co/600x700/f8fafc/334155?text=Diya\'s+Special+Sketch+Portrait'">
+            </div>
+            <div class="sketch-title">Diya (My Butku) ✨</div>
+            <div class="sketch-desc">
+              "Some faces are just etched with pure kindness. Handcrafted for the sweetest friend in the world."
+            </div>
           </div>
-          <div class="sketch-title">Diya (My Butku) ✨</div>
-          <div class="sketch-desc">
-            "Some faces are just etched with pure kindness. Handcrafted for the sweetest friend in the world."
+
+          <!-- 2. The 5 Floating Novels Shelf -->
+          <div class="novels-shelf-wrap" id="novelsShelf">
+            <div class="novels-header-pill">
+              <i class="fa-solid fa-book-sparkles"></i>
+              <span>Special Novels Library for Butku 📚</span>
+            </div>
+            <p style="color: var(--text-sub); font-size: 0.95rem; margin-bottom: 1rem;">
+              Tap any book to read inside the website, or download it to keep forever!
+            </p>
+
+            <div class="novels-grid">
+              <!-- Novel 1 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book1.pdf', 'Novel 1')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image1.png" alt="Novel 1" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+1'">
+                </div>
+                <div class="novel-name-tag">Novel 1</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 2 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book2.pdf', 'Novel 2')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image2.png" alt="Novel 2" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+2'">
+                </div>
+                <div class="novel-name-tag">Novel 2</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 3 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book3.pdf', 'Novel 3')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image3.png" alt="Novel 3" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+3'">
+                </div>
+                <div class="novel-name-tag">Novel 3</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 4 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book4.pdf', 'Novel 4')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image4.png" alt="Novel 4" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+4'">
+                </div>
+                <div class="novel-name-tag">Novel 4</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 5 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book5.pdf', 'Novel 5')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image5.png" alt="Novel 5" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+5'">
+                </div>
+                <div class="novel-name-tag">Novel 5</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -1913,11 +2228,11 @@
     }
 
     /* ==========================================================================
-       7. GIFT UNWRAP & SKETCH PORTRAIT
+       7. GIFT UNWRAP, SKETCH & 5 NOVELS REVEAL
        ========================================================================== */
     const giftBox3D = document.getElementById('giftBox3D');
     const wrapTape = document.getElementById('wrapTape');
-    const sketchRevealCard = document.getElementById('sketchRevealCard');
+    const surpriseContainer = document.getElementById('surpriseContainer');
     const openGiftBtn = document.getElementById('openGiftBtn');
     const giftInstructionsText = document.getElementById('giftInstructionsText');
     let giftUnwrapped = false;
@@ -1926,12 +2241,12 @@
       if (giftUnwrapped) return;
       giftUnwrapped = true;
 
-      if (musicPlayer) musicPlayer.playChime();
+      musicPlayer.playChime();
       if (giftBox3D) giftBox3D.classList.add('opened');
-      if (sketchRevealCard) sketchRevealCard.classList.add('revealed');
+      if (surpriseContainer) surpriseContainer.classList.add('revealed');
       if (openGiftBtn) openGiftBtn.style.display = 'none';
       if (giftInstructionsText) {
-        giftInstructionsText.innerHTML = "✨ Beautiful! Handcrafted with lots of love just for my sweet Butku Penguin! 🐧🎨";
+        giftInstructionsText.innerHTML = "✨ Beautiful! Handcrafted sketch & your special novels library just for my sweet Butku Penguin! 🐧🎨📚";
       }
 
       triggerConfettiParty();
@@ -1972,6 +2287,35 @@
       } 
     });
     if (wrapTape) wrapTape.addEventListener('click', unwrapGiftBox);
+
+    /* ==========================================================================
+       8. IN-WEBSITE PDF READER & DOWNLOAD ENGINE
+       ========================================================================== */
+    const pdfModalBackdrop = document.getElementById('pdfModalBackdrop');
+    const pdfFrame = document.getElementById('pdfFrame');
+    const pdfBookTitle = document.getElementById('pdfBookTitle');
+    const pdfDownloadBtn = document.getElementById('pdfDownloadBtn');
+
+    function openPdfReader(pdfUrl, titleText) {
+      if (pdfBookTitle) pdfBookTitle.innerText = titleText;
+      if (pdfFrame) pdfFrame.src = pdfUrl;
+      if (pdfDownloadBtn) {
+        pdfDownloadBtn.href = pdfUrl;
+        pdfDownloadBtn.setAttribute('download', `${titleText}.pdf`);
+      }
+      if (pdfModalBackdrop) pdfModalBackdrop.classList.add('active');
+    }
+
+    function closePdfReader() {
+      if (pdfModalBackdrop) pdfModalBackdrop.classList.remove('active');
+      if (pdfFrame) pdfFrame.src = "";
+    }
+
+    if (pdfModalBackdrop) {
+      pdfModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === pdfModalBackdrop) closePdfReader();
+      });
+    }
 
     /* Smooth Scroll Hero Button */
     const startJourneyBtn = document.getElementById('startJourneyBtn');
