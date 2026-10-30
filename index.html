@@ -1170,7 +1170,7 @@
       <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
     </section>
 
-    <!-- 3. SECRET WISH SECTION (FORMSUBMIT.CO INTEGRATION) -->
+    <!-- 3. SECRET WISH SECTION (FORMSUBMIT.CO SILENT IFRAME PIPELINE) -->
     <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
@@ -1184,27 +1184,39 @@
 
       <div class="wish-container">
         <div class="star-wish-box">
-          <label for="wishMessageInput" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
-            ✨ Diya's Heartfelt Wish:
-          </label>
-          <textarea 
-            id="wishMessageInput" 
-            placeholder="My secret wish this year is..." 
-            required></textarea>
+          <!-- Hidden iframe that receives the submission in the background without refreshing or opening apps -->
+          <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
 
-          <div class="wish-helper-text">
-            <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
-            <span>This note travels directly into Rakesh's inbox.</span>
-          </div>
+          <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
+            <!-- FormSubmit direct configuration fields -->
+            <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="Sender" value="Diya (Butku Penguin)">
 
-          <div style="margin-top: 1.4rem;">
-            <button type="button" id="sendWishBtn" class="btn-action" onclick="sendWishToGmail()" style="width: 100%;">
-              <i class="fa-solid fa-paper-plane"></i>
-              <span>Send Wish to Universe 🌠</span>
-            </button>
-          </div>
+            <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
+              ✨ Diya's Heartfelt Wish:
+            </label>
+            <textarea 
+              id="wishContent" 
+              name="Birthday_Wish" 
+              placeholder="My secret wish this year is..." 
+              required></textarea>
 
-          <div id="deliveryStatusMsg" class="wish-status-badge"></div>
+            <div class="wish-helper-text">
+              <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
+              <span>This note travels directly into Rakesh's inbox.</span>
+            </div>
+
+            <div style="margin-top: 1.4rem;">
+              <button type="submit" id="sendWishBtn" class="btn-action" style="width: 100%;">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Send Wish to Universe 🌠</span>
+              </button>
+            </div>
+          </form>
+
+          <div id="wishStatusMessage" class="wish-status-badge"></div>
         </div>
       </div>
     </section>
@@ -1360,11 +1372,6 @@
        JAVASCRIPT LOGIC
        ========================================================================== -->
   <script>
-    /* ==========================================================================
-       0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
-       ========================================================================== */
-    const MY_GMAIL_ID = "rakeshshingod2004@gmail.com"; 
-
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
        ========================================================================== */
@@ -1824,89 +1831,48 @@
     }, { passive: true });
 
     /* ==========================================================================
-       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (FORMSUBMIT.CO AJAX)
+       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (WORKING FORMSUBMIT + IFRAME)
        ========================================================================== */
-    function sendWishToGmail() {
-      const wishInput = document.getElementById('wishMessageInput');
-      const wishText = wishInput ? wishInput.value.trim() : "";
-      const statusEl = document.getElementById('deliveryStatusMsg');
-      const sendBtn = document.getElementById('sendWishBtn');
+    const wishForm = document.getElementById('wishForm');
+    const sendWishBtn = document.getElementById('sendWishBtn');
+    const wishStatusMessage = document.getElementById('wishStatusMessage');
+    const starLayer = document.getElementById('starLayer');
+    const wishContentInput = document.getElementById('wishContent');
 
-      if (!wishText) {
-        if (statusEl) {
-          statusEl.style.display = "block";
-          statusEl.style.color = "#e11d48";
-          statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
-        }
-        return;
-      }
-
-      if (sendBtn) {
-        sendBtn.disabled = true;
-        sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
-      }
-      if (statusEl) {
-        statusEl.style.display = "block";
-        statusEl.style.color = "#ff9ebb";
-        statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
-      }
-
-      // Trigger the shooting star animation
-      const starLayer = document.getElementById('starLayer');
+    function triggerShootingStar() {
       if (starLayer) {
         starLayer.classList.remove('active');
         void starLayer.offsetWidth;
         starLayer.classList.add('active');
         setTimeout(() => starLayer.classList.remove('active'), 1500);
       }
-
-      // FormSubmit AJAX API request: completely silent background POST to your Gmail
-      fetch(`https://formsubmit.co/ajax/${MY_GMAIL_ID}`, {
-        method: "POST",
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          _subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
-          Sender: "Diya (Butku Penguin)",
-          Birthday_Wish: wishText,
-          _template: "table"
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        onWishDelivered();
-      })
-      .catch(error => {
-        console.warn("Background delivery notice:", error);
-        // Even if ad-blockers intercept the response, the request is transmitted
-        onWishDelivered();
-      });
     }
 
-    function onWishDelivered() {
-      const statusEl = document.getElementById('deliveryStatusMsg');
-      const wishInput = document.getElementById('wishMessageInput');
-      const sendBtn = document.getElementById('sendWishBtn');
+    if (wishForm) {
+      wishForm.addEventListener('submit', function() {
+        triggerShootingStar();
 
-      if (statusEl) {
-        statusEl.style.display = "block";
-        statusEl.style.color = "#059669";
-        statusEl.style.background = "#ecfdf5";
-        statusEl.style.border = "1.5px solid #a7f3d0";
-        statusEl.style.padding = "1rem";
-        statusEl.style.borderRadius = "14px";
-        statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
-      }
-      
-      if (sendBtn) {
-        sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
-        sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-      }
-      if (wishInput) wishInput.disabled = true;
+        if (sendWishBtn) {
+          sendWishBtn.disabled = true;
+          sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
+        }
 
-      triggerConfettiParty();
+        setTimeout(() => {
+          if (wishStatusMessage) {
+            wishStatusMessage.className = 'wish-status-badge success';
+            wishStatusMessage.style.display = 'block';
+            wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
+          }
+          if (sendWishBtn) {
+            sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
+            sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+          }
+          if (wishContentInput) {
+            wishContentInput.disabled = true;
+          }
+          triggerConfettiParty();
+        }, 900);
+      });
     }
 
     /* ==========================================================================
