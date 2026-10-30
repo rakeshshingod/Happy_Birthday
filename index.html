@@ -5,21 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Happy Birthday Butku 💖</title>
   
-  <!-- Romantic Google Fonts -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Canvas Confetti Library -->
+  <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* ==========================================================================
-       1. GLOBAL THEME, TOKENS & RESET
-       ========================================================================== */
     :root {
       --rose-gold: #e07a86;
       --soft-rose: #f43f5e;
@@ -1009,7 +1004,7 @@
 </head>
 <body>
 
-  <!-- Ambient FX Canvas -->
+  <!-- Background Ambient Canvas -->
   <canvas id="fx-canvas"></canvas>
 
   <!-- Shooting Star Animation Overlay -->
@@ -1170,7 +1165,7 @@
       <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
     </section>
 
-    <!-- 3. SECRET WISH SECTION (FORMSUBMIT.CO SILENT IFRAME PIPELINE) -->
+    <!-- 3. SECRET WISH SECTION (FAIL-SAFE DUAL DISPATCH TO YOUR GMAIL) -->
     <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
@@ -1184,11 +1179,10 @@
 
       <div class="wish-container">
         <div class="star-wish-box">
-          <!-- Hidden iframe that receives the submission in the background without refreshing or opening apps -->
+          <!-- Hidden fallback iframe -->
           <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
 
           <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
-            <!-- FormSubmit direct configuration fields -->
             <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
@@ -1309,7 +1303,7 @@
       </div>
     </section>
 
-    <!-- 6. PROPERLY ARRANGED 3D GIFT & SKETCH PORTRAIT -->
+    <!-- 6. 3D GIFT & SKETCH PORTRAIT -->
     <section class="stage-card" id="stage-gift-section">
       <div class="badge-pill">
         <i class="fa-solid fa-gift"></i>
@@ -1831,7 +1825,7 @@
     }, { passive: true });
 
     /* ==========================================================================
-       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (WORKING FORMSUBMIT + IFRAME)
+       5. FAIL-SAFE SILENT GMAIL DISPATCH (DUAL PARALLEL TRANSMISSION)
        ========================================================================== */
     const wishForm = document.getElementById('wishForm');
     const sendWishBtn = document.getElementById('sendWishBtn');
@@ -1849,13 +1843,32 @@
     }
 
     if (wishForm) {
-      wishForm.addEventListener('submit', function() {
+      wishForm.addEventListener('submit', function(e) {
+        const wishText = wishContentInput ? wishContentInput.value.trim() : "";
+        if (!wishText) return;
+
         triggerShootingStar();
 
         if (sendWishBtn) {
           sendWishBtn.disabled = true;
-          sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
+          sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending wish...</span>`;
         }
+
+        // Parallel transmission 1: Direct JSON payload to Web3Forms API
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: "c22bb425-4c02-4ec4-bc2c-9d6a3fa99042",
+            to: "shingod.rakeshkumar@gmail.com",
+            subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
+            from_name: "Diya (Butku Penguin)",
+            message: wishText
+          })
+        }).catch(() => {});
+
+        // Parallel transmission 2: Native HTML submission into hidden iframe
+        // (FormSubmit processes silently in the iframe)
 
         setTimeout(() => {
           if (wishStatusMessage) {
