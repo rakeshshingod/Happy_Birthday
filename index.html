@@ -1209,6 +1209,24 @@
     <div class="shooting-star"></div>
   </div>
 
+  <!-- POPUP REEL MODAL -->
+  <div id="reelModalBackdrop" class="reel-modal-backdrop">
+    <div class="floating-reel-card">
+      <div class="floating-reel-header">
+        <span class="reel-tag" id="reelModalTag"><i class="fa-solid fa-cake-candles"></i> A Wish for Diya ✨</span>
+        <button class="close-reel-btn" onclick="closeReelModal()" title="Close">&times;</button>
+      </div>
+      <div class="reel-video-wrapper">
+        <video id="reelVideoPlayer" loop playsinline preload="auto">
+          <source id="reelVideoSource" src="images/video1.mp4" type="video/mp4">
+        </video>
+        <button class="unmute-overlay-btn" id="unmuteOverlayBtn" onclick="toggleReelSound()">
+          <i class="fa-solid fa-volume-high"></i> <span id="unmuteBtnText">Tap for Sound</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
   <!-- Top Glass Navigation with Polyphonic Music Box -->
   <header class="top-nav">
     <div class="brand-logo">
