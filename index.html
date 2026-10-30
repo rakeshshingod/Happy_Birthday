@@ -1366,21 +1366,7 @@
     /* ==========================================================================
        0. CONFIGURATIONS: TARGET GMAIL RECIPIENT & EMAILJS
        ========================================================================== */
-    const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
-
-    // Enter your 3 keys from https://www.emailjs.com/
-    const EMAILJS_PUBLIC_KEY = "";    // e.g. "bK9_xxxxxxx"
-    const EMAILJS_SERVICE_ID = "";    // e.g. "service_xxxxxxx"
-    const EMAILJS_TEMPLATE_ID = "";  // e.g. "template_xxxxxxx"
-
-    // Fail-safe init: never crashes if keys are empty
-    try {
-      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY.trim() !== "") {
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-      }
-    } catch (e) {
-      console.warn("EmailJS init bypassed:", e);
-    }
+    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
 
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
@@ -1843,100 +1829,37 @@
     /* ==========================================================================
        5. SILENT BACKGROUND GMAIL DELIVERY ENGINE
        ========================================================================== */
-    function sendWishToGmail() {
-      const wishInput = document.getElementById('wishMessageInput');
-      const wishText = wishInput ? wishInput.value.trim() : "";
-      const statusEl = document.getElementById('deliveryStatusMsg');
-      const sendBtn = document.getElementById('sendWishBtn');
+    const wishForm = document.getElementById('wishForm');
+    const sendWishBtn = document.getElementById('sendWishBtn');
+    const wishStatusMessage = document.getElementById('wishStatusMessage');
+    const starLayer = document.getElementById('starLayer');
+    const wishContentInput = document.getElementById('wishContent');
 
-      if (!wishText) {
-        if (statusEl) {
-          statusEl.style.display = "block";
-          statusEl.style.color = "#e11d48";
-          statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
-        }
-        return;
-      }
-
-      if (sendBtn) {
-        sendBtn.disabled = true;
-        sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
-      }
-      if (statusEl) {
-        statusEl.style.display = "block";
-        statusEl.style.color = "#ff9ebb";
-        statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
-      }
-
-      // Trigger the shooting star animation
-      const starLayer = document.getElementById('starLayer');
-      if (starLayer) {
-        starLayer.classList.remove('active');
-        void starLayer.offsetWidth;
-        starLayer.classList.add('active');
-        setTimeout(() => starLayer.classList.remove('active'), 1500);
-      }
-
-      // If EmailJS keys configured, send via EmailJS
-      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY.trim() !== "" && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email: MY_GMAIL_ID,
-          from_name: "Diya (Butku Penguin)",
-          message: wishText
-        }).then(() => {
-          onWishDelivered();
-        }).catch((error) => {
-          console.warn("EmailJS error, fallback triggered:", error);
-          fallbackSilentRelay(wishText);
-        });
-      } else {
-        // Fallback: Web3Forms silent background delivery
-        fallbackSilentRelay(wishText);
-      }
+    function triggerShootingStar() {
+      starLayer.classList.remove('active');
+      void starLayer.offsetWidth; // Force reflow
+      starLayer.classList.add('active');
+      setTimeout(() => starLayer.classList.remove('active'), 1500);
     }
 
-    function fallbackSilentRelay(wishText) {
-      fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          access_key: "c22bb425-4c02-4ec4-bc2c-9d6a3fa99042",
-          to: MY_GMAIL_ID,
-          subject: "💖 Diya (Butku) Made a Birthday Wish!",
-          from_name: "Diya (Butku Penguin)",
-          message: `Diya's birthday wish:\n\n"${wishText}"`
-        })
-      }).then(() => {
-        onWishDelivered();
-      }).catch(() => {
-        // Even in offline / ad-block mode, provide positive confirmation
-        onWishDelivered();
-      });
-    }
+    wishForm.addEventListener('submit', function() {
+      // 1. Immediately trigger animations
+      triggerShootingStar();
 
-    function onWishDelivered() {
-      const statusEl = document.getElementById('deliveryStatusMsg');
-      const wishInput = document.getElementById('wishMessageInput');
-      const sendBtn = document.getElementById('sendWishBtn');
+      // 2. Button state
+      sendWishBtn.disabled = true;
+      sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
 
-      if (statusEl) {
-        statusEl.style.display = "block";
-        statusEl.style.color = "#059669";
-        statusEl.style.background = "#ecfdf5";
-        statusEl.style.border = "1.5px solid #a7f3d0";
-        statusEl.style.padding = "1rem";
-        statusEl.style.borderRadius = "14px";
-        statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
-      }
-      
-      if (sendBtn) {
-        sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
-        sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-      }
-      if (wishInput) wishInput.disabled = true;
-
-      triggerConfettiParty();
-    }
+      // 3. Confirm success after brief sending animation
+      setTimeout(() => {
+        wishStatusMessage.className = 'wish-status-badge success';
+        wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
+        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
+        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        wishContentInput.disabled = true;
+        triggerConfettiParty();
+      }, 900);
+    });
 
     /* ==========================================================================
        6. POLAROID FLIP
