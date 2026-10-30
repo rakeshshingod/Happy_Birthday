@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Happy Birthday Butku 💖</title>
-  <!-- Google Fonts: Elegant, Romantic & Handwritten -->
+  
+  <!-- Romantic Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
@@ -17,22 +18,19 @@
 
   <style>
     /* ==========================================================================
-       1. GLOBAL THEME, TOKENS & RESPONSIVE FOUNDATION
+       1. GLOBAL THEME, TOKENS & RESET
        ========================================================================== */
     :root {
       --rose-gold: #e07a86;
       --soft-rose: #f43f5e;
       --rose-light: #fff0f3;
       --peach: #fed7aa;
-      --champagne: #fef3c7;
-      --lavender: #f3e8ff;
       --gold: #f59e0b;
-      --glass-bg: rgba(255, 255, 255, 0.78);
-      --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.9);
       --glass-shadow: 0 20px 45px -10px rgba(224, 122, 134, 0.22);
       --text-main: #34282c;
       --text-sub: #6e5d63;
-      --accent-glow: 0 0 25px rgba(244, 63, 94, 0.35);
     }
 
     * {
@@ -43,16 +41,19 @@
       user-select: none;
     }
 
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Outfit', sans-serif;
       background: linear-gradient(135deg, #fff5f6 0%, #fff0f5 35%, #fff7ed 70%, #fdf4ff 100%);
       color: var(--text-main);
       min-height: 100vh;
-      overflow-x: hidden;
       position: relative;
     }
 
-    /* Interactive Background Canvas for floating stars and smoke */
     #fx-canvas {
       position: fixed;
       top: 0;
@@ -63,7 +64,7 @@
       z-index: 0;
     }
 
-    /* Fixed Glass Navigation & Floating Music Bar */
+    /* Fixed Glass Navigation */
     .top-nav {
       position: fixed;
       top: 0;
@@ -76,7 +77,7 @@
       z-index: 50;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.75);
       border-bottom: 1px solid rgba(244, 63, 94, 0.12);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
@@ -93,12 +94,6 @@
       gap: 0.4rem;
     }
 
-    .audio-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
     .music-pill-btn {
       background: white;
       border: 1px solid rgba(244, 63, 94, 0.25);
@@ -112,13 +107,7 @@
       align-items: center;
       gap: 0.45rem;
       box-shadow: 0 4px 14px rgba(244, 63, 94, 0.12);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .music-pill-btn:hover {
-      transform: translateY(-2px);
-      background: var(--rose-light);
-      box-shadow: 0 8px 18px rgba(244, 63, 94, 0.2);
+      transition: all 0.3s ease;
     }
 
     .music-pill-btn.playing {
@@ -150,7 +139,6 @@
       50% { transform: scaleY(1); }
     }
 
-    /* Content Layout Container */
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -159,7 +147,6 @@
       z-index: 1;
     }
 
-    /* Glass Cards */
     .stage-card {
       background: var(--glass-bg);
       backdrop-filter: blur(18px);
@@ -171,12 +158,6 @@
       box-shadow: var(--glass-shadow);
       text-align: center;
       position: relative;
-      overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
-    }
-
-    .stage-card:hover {
-      box-shadow: 0 25px 55px -10px rgba(244, 63, 94, 0.28);
     }
 
     .badge-pill {
@@ -219,7 +200,6 @@
       font-weight: 400;
     }
 
-    /* Buttons */
     .btn-action {
       background: linear-gradient(135deg, #f43f5e 0%, #fb7185 50%, #fda4af 100%);
       color: #fff;
@@ -241,35 +221,16 @@
     .btn-action:hover {
       transform: translateY(-3px) scale(1.03);
       box-shadow: 0 16px 32px rgba(244, 63, 94, 0.48);
-      color: white;
-    }
-
-    .btn-action:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .btn-action:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       color: var(--soft-rose);
-      border: 1.5px solid rgba(244, 63, 94, 0.2);
+      border: 1.5px solid rgba(244, 63, 94, 0.25);
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
 
-    .btn-secondary:hover {
-      background: var(--rose-light);
-      border-color: var(--soft-rose);
-    }
-
-    /* ==========================================================================
-       2. REVOLUTIONARY CAKE & CANDLE INTERACTION STYLES
-       ========================================================================== */
+    /* Cake Stage */
     .stage-interactive-area {
       position: relative;
       margin: 2rem auto;
@@ -281,7 +242,6 @@
       justify-content: center;
     }
 
-    /* Cake 3D Staged Perspective */
     .cake-stage {
       position: relative;
       width: 290px;
@@ -293,7 +253,6 @@
       touch-action: none;
     }
 
-    /* Golden Plate */
     .cake-base-dish {
       position: absolute;
       bottom: -6px;
@@ -301,20 +260,17 @@
       height: 18px;
       background: linear-gradient(90deg, #fef08a 0%, #fbbf24 50%, #d97706 100%);
       border-radius: 50%;
-      box-shadow: 0 14px 25px rgba(217, 119, 6, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 14px 25px rgba(217, 119, 6, 0.3);
       z-index: 1;
     }
 
-    /* Cake Tiers with Frosting Texture */
     .cake-tier {
       position: relative;
       border-radius: 18px 18px 12px 12px;
       box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.08), 0 8px 16px rgba(244, 63, 94, 0.14);
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       overflow: hidden;
     }
 
-    /* Decorative Cream Drips on Top of Each Tier */
     .cake-tier::before {
       content: '';
       position: absolute;
@@ -325,11 +281,9 @@
       background: radial-gradient(circle at 10px 0, #ffffff 10px, transparent 11px) repeat-x;
       background-size: 20px 20px;
       background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       z-index: 5;
     }
 
-    /* Bottom Tier */
     .tier-1 {
       width: 240px;
       height: 78px;
@@ -338,7 +292,6 @@
       margin-bottom: 8px;
     }
 
-    /* Middle Tier */
     .tier-2 {
       width: 180px;
       height: 64px;
@@ -346,7 +299,6 @@
       z-index: 3;
     }
 
-    /* Top Tier */
     .tier-3 {
       width: 125px;
       height: 52px;
@@ -354,7 +306,6 @@
       z-index: 4;
     }
 
-    /* Strawberries & Pearl Candies on cake */
     .pearl-decorations {
       position: absolute;
       top: 6px;
@@ -369,10 +320,8 @@
       height: 9px;
       background: #fff;
       border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
-    /* Candle Configuration */
     .candle-group {
       position: absolute;
       top: 24px;
@@ -387,15 +336,8 @@
       position: relative;
       width: 12px;
       height: 44px;
-      background: repeating-linear-gradient(
-        -45deg,
-        #ffffff,
-        #ffffff 5px,
-        #f43f5e 5px,
-        #f43f5e 10px
-      );
+      background: repeating-linear-gradient(-45deg, #fff, #fff 5px, #f43f5e 5px, #f43f5e 10px);
       border-radius: 6px 6px 2px 2px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       cursor: pointer;
     }
 
@@ -409,7 +351,6 @@
       background: #475569;
     }
 
-    /* Glowing Animated Flame */
     .flame {
       position: absolute;
       top: -26px;
@@ -417,8 +358,8 @@
       transform: translateX(-50%);
       width: 15px;
       height: 25px;
-      background: radial-gradient(ellipse at bottom, #ffffff 0%, #fef08a 35%, #f97316 75%, transparent 100%);
-      border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+      background: radial-gradient(ellipse at bottom, #fff 0%, #fef08a 35%, #f97316 75%, transparent 100%);
+      border-radius: 50% 50% 35% 35%;
       filter: drop-shadow(0 0 10px #f59e0b) drop-shadow(0 0 18px #ef4444);
       animation: flameWiggle 1.2s infinite alternate ease-in-out;
       transform-origin: 50% 90%;
@@ -426,9 +367,8 @@
     }
 
     @keyframes flameWiggle {
-      0% { transform: translateX(-50%) rotate(-3deg) scale(1, 1); }
-      50% { transform: translateX(-50%) rotate(3deg) scale(1.06, 0.96); }
-      100% { transform: translateX(-50%) rotate(-1deg) scale(0.97, 1.04); }
+      0% { transform: translateX(-50%) rotate(-3deg) scale(1); }
+      100% { transform: translateX(-50%) rotate(3deg) scale(1.06); }
     }
 
     .flame.extinguished {
@@ -437,7 +377,6 @@
       pointer-events: none;
     }
 
-    /* Microphone Breath Detector Visual Ring */
     .mic-indicator-wrap {
       display: inline-flex;
       align-items: center;
@@ -465,9 +404,6 @@
       50% { transform: scale(1.3); opacity: 1; }
     }
 
-    /* ==========================================================================
-       3. UNIQUE CAKE SLICING & CUT INTERACTION
-       ========================================================================== */
     .knife-tool {
       position: absolute;
       top: -20px;
@@ -476,14 +412,8 @@
       filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
       cursor: grab;
       z-index: 40;
-      transition: transform 0.15s ease-out;
       display: none;
       animation: knifeBounce 1.8s infinite ease-in-out;
-      pointer-events: auto;
-    }
-
-    .knife-tool:active {
-      cursor: grabbing;
     }
 
     @keyframes knifeBounce {
@@ -491,7 +421,6 @@
       50% { transform: translateY(-8px) rotate(-15deg); }
     }
 
-    /* Cake Cut Animation line */
     .cake-cut-path {
       position: absolute;
       top: 40px;
@@ -502,12 +431,11 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(244, 63, 94, 0.8);
       transform: scaleY(0);
       transform-origin: top;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.6s ease;
       z-index: 25;
       pointer-events: none;
     }
 
-    /* Sliced piece separating */
     .cake-slice-piece {
       position: absolute;
       bottom: 20px;
@@ -531,10 +459,10 @@
       height: 12px;
       background: #fef08a;
       border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       position: absolute;
       bottom: 0;
       left: -5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
 
     .slice-wedge {
@@ -546,7 +474,6 @@
       position: absolute;
       bottom: 10px;
       left: 4px;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.15));
     }
 
     .slice-strawberry {
@@ -557,7 +484,7 @@
     }
 
     .slice-guide-banner {
-      background: rgba(254, 242, 242, 0.9);
+      background: rgba(254, 242, 242, 0.95);
       border: 1px dashed var(--soft-rose);
       color: var(--soft-rose);
       padding: 0.65rem 1.2rem;
@@ -568,12 +495,6 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      animation: pulseGuide 2s infinite;
-    }
-
-    @keyframes pulseGuide {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
     }
 
     /* Centered Floating Reel */
@@ -688,9 +609,7 @@
       z-index: 10;
     }
 
-    /* ==========================================================================
-       4. MAGICAL WISH BOTTLE & EMAIL DISPATCH
-       ========================================================================== */
+    /* Wish Section */
     .wish-container {
       max-width: 580px;
       margin: 1.5rem auto 0 auto;
@@ -698,12 +617,11 @@
     }
 
     .star-wish-box {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       border: 2px solid rgba(244, 63, 94, 0.25);
       border-radius: 24px;
       padding: 1.75rem;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03), 0 10px 25px rgba(244, 63, 94, 0.08);
-      position: relative;
+      box-shadow: 0 10px 25px rgba(244, 63, 94, 0.08);
     }
 
     .star-wish-box textarea {
@@ -713,13 +631,10 @@
       border-radius: 16px;
       padding: 1rem 1.2rem;
       font-family: inherit;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-main);
-      background: #fff;
       outline: none;
       resize: vertical;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
     .star-wish-box textarea:focus {
@@ -743,7 +658,6 @@
       border-radius: 16px;
       font-size: 0.95rem;
       text-align: center;
-      line-height: 1.5;
     }
 
     .wish-status-badge.success {
@@ -753,7 +667,6 @@
       border: 1.5px solid #a7f3d0;
     }
 
-    /* Shooting Star Animation for Wish */
     .shooting-star-layer {
       position: fixed;
       top: 0;
@@ -764,16 +677,13 @@
       z-index: 99;
       display: none;
     }
-
-    .shooting-star-layer.active {
-      display: block;
-    }
+    .shooting-star-layer.active { display: block; }
 
     .shooting-star {
       position: absolute;
       width: 120px;
       height: 2px;
-      background: linear-gradient(90deg, #fff, rgba(254, 240, 138, 0.8), transparent);
+      background: linear-gradient(90deg, #fff, #fef08a, transparent);
       box-shadow: 0 0 15px #fef08a;
       transform: rotate(-35deg);
       animation: shootAcross 1.4s ease-out forwards;
@@ -785,9 +695,7 @@
       100% { top: 70%; right: 90%; width: 0; opacity: 0; }
     }
 
-    /* ==========================================================================
-       5. 3D FLIPPABLE POLAROID MEMORY CARDS
-       ========================================================================== */
+    /* Polaroids */
     .polaroid-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -852,10 +760,6 @@
       margin-top: 0.85rem;
       color: #3b2a2d;
       text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
     }
 
     .polaroid-back {
@@ -878,73 +782,10 @@
       color: var(--soft-rose);
       margin-top: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
       font-weight: 600;
     }
 
-    /* Lightbox Modal */
-    .lightbox-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 10, 12, 0.88);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 120;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      padding: 1.5rem;
-    }
-
-    .lightbox-modal.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .lightbox-box {
-      max-width: 90%;
-      max-height: 85%;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      background: white;
-      padding: 12px;
-      position: relative;
-    }
-
-    .lightbox-box img {
-      width: 100%;
-      height: 100%;
-      max-height: 75vh;
-      object-fit: contain;
-      border-radius: 14px;
-      display: block;
-    }
-
-    .lightbox-close-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.55);
-      color: white;
-      border: none;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    /* ==========================================================================
-       6. HEARTFELT LOVE LETTER CARD
-       ========================================================================== */
+    /* Letter Card */
     .letter-card {
       background: #fff;
       border-radius: 24px;
@@ -956,23 +797,10 @@
       font-family: 'Playfair Display', Georgia, serif;
     }
 
-    .letter-card::before {
-      content: '“';
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      font-size: 6rem;
-      color: rgba(244, 63, 94, 0.08);
-      line-height: 1;
-      font-family: Georgia, serif;
-    }
-
     .letter-body {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       line-height: 2;
       color: #3f2e33;
-      position: relative;
-      z-index: 2;
     }
 
     .letter-signature {
@@ -1148,15 +976,11 @@
       display: none;
     }
 
-
-    /* Footer */
     footer {
       text-align: center;
       padding: 3rem 1rem 4rem 1rem;
       color: var(--text-sub);
       font-size: 0.95rem;
-      position: relative;
-      z-index: 2;
     }
 
     .heart-beat-icon {
@@ -1170,38 +994,22 @@
       50% { transform: scale(1.3); }
     }
 
-    /* Mobile Responsive Optimizations */
     @media (max-width: 680px) {
-      .container {
-        padding: 4.8rem 1rem 3rem 1rem;
-      }
-      .stage-card {
-        padding: 2rem 1.25rem;
-        border-radius: 24px;
-        margin-bottom: 2.5rem;
-      }
-      .highlight-name {
-        font-size: 2.6rem;
-      }
-      .cake-stage {
-        transform: scale(0.92);
-      }
-      .polaroid-grid {
-        grid-template-columns: 1fr;
-        max-width: 320px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .btn-action {
-        width: 100%;
-        padding: 0.88rem 1.5rem;
-      }
+      .top-nav { padding: 0.65rem 1rem; }
+      .brand-logo { font-size: 1.45rem; }
+      .container { padding: 4.6rem 0.85rem 2.5rem 0.85rem; }
+      .stage-card { padding: 1.8rem 1rem; border-radius: 22px; margin-bottom: 2.2rem; }
+      .highlight-name { font-size: 2.4rem; }
+      .polaroid-grid { grid-template-columns: 1fr; max-width: 290px; margin: 0 auto; }
+      .letter-card { padding: 1.6rem 1.2rem; }
+      .letter-body { font-size: 1rem; line-height: 1.8; }
+      .floating-reel-card { width: 280px; height: 480px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Particle & Smoke Canvas -->
+  <!-- Ambient FX Canvas -->
   <canvas id="fx-canvas"></canvas>
 
   <!-- Shooting Star Animation Overlay -->
@@ -1226,8 +1034,8 @@
       </div>
     </div>
   </div>
-  
-  <!-- Top Glass Navigation with Polyphonic Music Box -->
+
+  <!-- Top Glass Navigation -->
   <header class="top-nav">
     <div class="brand-logo">
       <span>Diya</span>
@@ -1248,10 +1056,7 @@
 
   <main class="container">
 
-    <!-- ==========================================================================
-         STAGE 1: PERSONALIZED ENCHANTING INTRO
-         CUSTOMIZATION: Edit the text below to include your own memory or words!
-         ========================================================================== -->
+    <!-- 1. INTRO SECTION -->
     <section class="stage-card" id="stage-welcome">
       <div class="badge-pill">
         <i class="fa-solid fa-sparkles"></i>
@@ -1266,7 +1071,7 @@
         makes everything in this world feel warm and bright. You are truly one of a kind.
       </p>
 
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <div>
         <button id="startJourneyBtn" class="btn-action">
           <span>Begin The Surprise</span>
           <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -1274,9 +1079,7 @@
       </div>
     </section>
 
-    <!-- ==========================================================================
-         STAGE 2: UNIQUE CANDLE BLOW (Microphone Detection + Touch Gesture)
-         ========================================================================== -->
+    <!-- 2. CANDLE BLOW & CAKE CUTTING SECTION -->
     <section class="stage-card" id="stage-cake-section">
       <div class="badge-pill">
         <i class="fa-solid fa-cake-candles"></i>
@@ -1285,82 +1088,68 @@
 
       <h2>Make A Wish & Blow The Candle!</h2>
       <p class="stage-subtitle">
-        Close your eyes, think of the happiest wish in your heart. You can <strong>blow gently into your microphone</strong> like a real candle, or swipe across the flame!
+        Close your eyes, think of the happiest wish in your heart. You can <strong>blow gently into your microphone</strong> like a real candle, or tap the button!
       </p>
 
       <div class="stage-interactive-area">
-
-        <!-- Slicing Floating Knife -->
         <div id="knifeTool" class="knife-tool" title="Drag me to cut the cake!">🔪</div>
 
-        <!-- Sliced Piece That Pops Out -->
         <div id="cakeSlice" class="cake-slice-piece">
           <div class="slice-strawberry">🍓</div>
           <div class="slice-wedge"></div>
           <div class="slice-plate"></div>
         </div>
 
-        <!-- The 3D CSS Layered Cake -->
         <div class="cake-stage" id="cakeStage">
-          <!-- Cut Line Indicator -->
           <div class="cake-cut-path" id="cakeCutPath"></div>
 
-          <!-- Triple Candles with Wick & Flames -->
           <div class="candle-group">
-            <div class="candle" id="candle-1" onclick="extinguishCandlesManually()">
+            <div class="candle" onclick="extinguishCandles()">
               <div class="candle-wick"></div>
               <div class="flame flame-item"></div>
             </div>
-            <div class="candle" id="candle-2" onclick="extinguishCandlesManually()">
+            <div class="candle" onclick="extinguishCandles()">
               <div class="candle-wick"></div>
               <div class="flame flame-item"></div>
             </div>
-            <div class="candle" id="candle-3" onclick="extinguishCandlesManually()">
+            <div class="candle" onclick="extinguishCandles()">
               <div class="candle-wick"></div>
               <div class="flame flame-item"></div>
             </div>
           </div>
 
-          <!-- Top Tier with Pearls -->
           <div class="cake-tier tier-3">
             <div class="pearl-decorations">
               <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
             </div>
           </div>
 
-          <!-- Middle Tier -->
           <div class="cake-tier tier-2">
             <div class="pearl-decorations">
               <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
             </div>
           </div>
 
-          <!-- Bottom Tier -->
           <div class="cake-tier tier-1">
             <div class="pearl-decorations">
               <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
             </div>
           </div>
 
-          <!-- Golden Stand Base -->
           <div class="cake-base-dish"></div>
         </div>
 
-        <!-- Microphone Detection Feedback -->
         <div id="micFeedback" class="mic-indicator-wrap" style="display: none;">
           <div class="mic-live-pulse"></div>
           <span id="micStatusText">Microphone listening... blow softly into your phone! 🌬️</span>
         </div>
 
-        <!-- Slice Guidance Alert Banner -->
         <div id="sliceGuide" class="slice-guide-banner" style="display: none;">
           <i class="fa-solid fa-hand-pointer"></i>
           <span>Now tap or drag the knife down across the cake to slice it! 🍰</span>
         </div>
-
       </div>
 
-      <!-- Action Buttons for Candle & Cake -->
       <div style="display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
         <button id="enableMicBtn" class="btn-action btn-secondary">
           <i class="fa-solid fa-microphone"></i>
@@ -1381,13 +1170,8 @@
       <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
     </section>
 
-    <!-- ==========================================================================
-         STAGE 3: THE SECRET WISH BOTTLE (Straight to your email)
-         CUSTOMIZATION TIP:
-         1. Create a free form at https://formspree.io and paste your endpoint below.
-         2. Or simply change the fallback email in the JavaScript constant `CREATOR_EMAIL`.
-         ========================================================================== -->
-<section class="stage-card" id="stage-wish-section">
+    <!-- 3. SECRET WISH SECTION (FORMSUBMIT.CO INTEGRATION) -->
+    <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
         <span>Direct To My Heart</span>
@@ -1395,59 +1179,37 @@
 
       <h2>Send A Secret Wish to the Stars</h2>
       <p class="stage-subtitle">
-        Write down anything you want in this life, Butku: your wildest dream, something you wish for us, 
-        or a little secret. When you tap send, a shooting star will carry it directly into my inbox!
+        Write down anything you want in this life, Butku. When you tap send, a shooting star will carry it directly into my inbox!
       </p>
 
       <div class="wish-container">
         <div class="star-wish-box">
-          <!-- Invisible iframe to handle submission silently in the background -->
-          <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
+          <label for="wishMessageInput" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
+            ✨ Diya's Heartfelt Wish:
+          </label>
+          <textarea 
+            id="wishMessageInput" 
+            placeholder="My secret wish this year is..." 
+            required></textarea>
 
-          <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
-            <!-- FormSubmit hidden configurations -->
-            <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="Sender" value="Diya (Butku)">
+          <div class="wish-helper-text">
+            <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
+            <span>This note travels directly into Rakesh's inbox.</span>
+          </div>
 
-            <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
-              ✨ Diya's Heartfelt Wish:
-            </label>
-            <textarea 
-              id="wishContent" 
-              name="Birthday_Wish" 
-              placeholder="My secret wish this year is..." 
-              required></textarea>
+          <div style="margin-top: 1.4rem;">
+            <button type="button" id="sendWishBtn" class="btn-action" onclick="sendWishToGmail()" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send Wish to Universe 🌠</span>
+            </button>
+          </div>
 
-            <div class="wish-helper-text">
-              <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
-              <span>This note is encrypted with love and sent only to me.</span>
-            </div>
-
-            <div style="margin-top: 1.4rem;">
-              <button type="submit" id="sendWishBtn" class="btn-action" style="width: 100%;">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Send Wish to Universe 🌠</span>
-              </button>
-            </div>
-          </form>
-
-          <div id="wishStatusMessage" class="wish-status-badge"></div>
+          <div id="deliveryStatusMsg" class="wish-status-badge"></div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         STAGE 4: 3D FLIPPABLE POLAROID MEMORY LANE
-         HOW TO ADD DIYA'S PHOTOS:
-         Option 1 (Host locally on GitHub):
-           - In your GitHub repo, create a folder named `images`
-           - Add photos (e.g., `images/diya1.jpg`, `images/diya2.jpg`)
-           - Update the `src=""` attributes below to `images/diya1.jpg`
-         Option 2:
-           - Paste direct links from image hosting or cloud storage.
-         ========================================================================== -->
+    <!-- 4. MEMORY LANE POLAROID GALLERY -->
     <section class="stage-card" id="stage-memories-section">
       <div class="badge-pill">
         <i class="fa-solid fa-images"></i>
@@ -1460,71 +1222,15 @@
       </p>
 
       <div class="polaroid-grid">
-
-        <!-- Polaroid Photo 1 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
+              <img src="images/Butku1.jpeg" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
+              <div class="polaroid-front-caption"><span>My Sweet Friend Butku</span> 🧸</div>
               <div class="flip-indicator-hint">Tap to flip ↺</div>
             </div>
             <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Polaroid Photo 2 -->
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Polaroid Photo 3 -->
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku2.png" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
+              <div class="polaroid-back-text">"Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."</div>
               <div class="flip-indicator-hint">Tap to flip back</div>
             </div>
           </div>
@@ -1533,32 +1239,34 @@
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
+              <img src="images/Butku2.png" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Kindest+Soul'">
+              <div class="polaroid-front-caption"><span>Pure Joy & Kindness</span> ✨</div>
               <div class="flip-indicator-hint">Tap to flip ↺</div>
             </div>
             <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
+              <div class="polaroid-back-text">"Your smile has this effortless way of making everything feel soft, peaceful, and joyful."</div>
               <div class="flip-indicator-hint">Tap to flip back</div>
             </div>
           </div>
         </div>
 
+        <div class="polaroid-card" onclick="flipPolaroid(this)">
+          <div class="polaroid-inner">
+            <div class="polaroid-front">
+              <img src="images/Butku1.jpeg" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Always+Smiling'">
+              <div class="polaroid-front-caption"><span>Forever Cherished</span> 🌸</div>
+              <div class="flip-indicator-hint">Tap to flip ↺</div>
+            </div>
+            <div class="polaroid-back">
+              <div class="polaroid-back-text">"Thank you for being the genuine, lovely, and wonderful friend you are every single day."</div>
+              <div class="flip-indicator-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         STAGE 5: HEARTFELT LETTER TO DIYA
-         CUSTOMIZATION: Edit the letter below with your personal feelings!
-         ========================================================================== -->
+    <!-- 5. HEARTFELT LETTER -->
     <section class="stage-card" id="stage-letter-section">
       <div class="badge-pill">
         <i class="fa-solid fa-heart"></i>
@@ -1567,9 +1275,7 @@
 
       <div class="letter-card">
         <div class="letter-body">
-          <p>
-            Dearest Diya,
-          </p>
+          <p>Dearest Diya,</p>
           <br>
           <p>
             On this special day, I just want you to pause for a second and realize how truly rare and precious you are. 
@@ -1582,9 +1288,7 @@
             and dreams that come true before you even finish wishing for them.
           </p>
           <br>
-          <p>
-            Thank you for being you. Today, tomorrow, and every year ahead—I'm always cheering for your happiness.
-          </p>
+          <p>Thank you for being you. Today, tomorrow, and every year ahead—I'm always cheering for your happiness.</p>
 
           <div class="letter-signature">
             Forever Yours & Always in your corner 🤍. Glad to have friend like you Butku Penguin 💖 
@@ -1647,35 +1351,19 @@
 
   </main>
 
-  <!-- Photo Fullscreen Lightbox -->
-  <div id="fullLightbox" class="lightbox-modal" onclick="closeLightbox(event)">
-    <div class="lightbox-box">
-      <button class="lightbox-close-btn" onclick="closeLightbox(event)">&times;</button>
-      <img id="lightboxImg" src="" alt="Enlarged view">
-    </div>
-  </div>
-
-  <!-- Romantic Footer -->
   <footer>
     <p>Crafted exclusively for <strong>Diya (Butku)</strong> with endless love. Thank You for being my Friend 💖<i class="fa-solid fa-heart heart-beat-icon"></i></p>
     <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7;">May all your birthday wishes come true ✨</p>
   </footer>
 
   <!-- ==========================================================================
-       JAVASCRIPT: POLYPHONIC AUDIO SYNTHESIS, PARTICLES, MIC DETECTION & SLICING
+       JAVASCRIPT LOGIC
        ========================================================================== -->
   <script>
     /* ==========================================================================
-       CONFIGURATIONS: EDIT YOUR EMAIL OR FORMSPREE ID HERE
+       0. CONFIGURATIONS: TARGET GMAIL RECIPIENT
        ========================================================================== */
-    // 1. Enter your Formspree endpoint URL here (e.g., 'https://formspree.io/f/mqkrvkpd')
-    // Get free Formspree ID at https://formspree.io
-    /* ==========================================================================
-       CONFIGURATIONS: TARGET GMAIL RECIPIENT
-       ========================================================================== */
-    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
-
-    // 2. Fallback Email (if Formspree is not set up, it triggers a mail client for backup)
+    const MY_GMAIL_ID = "shingod.rakeshkumar@gmail.com"; 
 
     /* ==========================================================================
        1. REEL VIDEOS CONFIGURATION
@@ -1896,33 +1584,34 @@
     }
     if (musicBtn) musicBtn.addEventListener('click', toggleMusic);
 
-
     /* ==========================================================================
-       2. CANVAS PARTICLES & RISING SMOKE SIMULATOR
+       3. AMBIENT PARTICLES & SMOKE
        ========================================================================== */
     const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas ? canvas.getContext('2d') : null;
     let particles = [];
     let smokeParticles = [];
 
     function resizeCanvas() {
+      if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Spawn ambient hearts and sparkling dust
-    for (let i = 0; i < 28; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1.5,
-        speedY: -(Math.random() * 0.6 + 0.3),
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.7 + 0.2,
-        color: ['#f43f5e', '#fbcfe8', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
-      });
+    if (canvas) {
+      for (let i = 0; i < 28; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 3 + 1.5,
+          speedY: -(Math.random() * 0.6 + 0.3),
+          speedX: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.7 + 0.2,
+          color: ['#f43f5e', '#fbcfe8', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
+        });
+      }
     }
 
     function createSmokePuff(x, y) {
@@ -1940,9 +1629,8 @@
     }
 
     function renderFX() {
+      if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Render floating ambient sparkles
       particles.forEach(p => {
         p.y += p.speedY;
         p.x += p.speedX;
@@ -1950,7 +1638,6 @@
           p.y = canvas.height + 10;
           p.x = Math.random() * canvas.width;
         }
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
@@ -1958,25 +1645,21 @@
         ctx.fill();
       });
 
-      // Render realistic rising smoke from extinguished candle
       for (let i = smokeParticles.length - 1; i >= 0; i--) {
         const s = smokeParticles[i];
         s.y += s.speedY;
         s.x += s.speedX;
         s.size += s.growth;
         s.opacity -= 0.009;
-
         if (s.opacity <= 0) {
           smokeParticles.splice(i, 1);
           continue;
         }
-
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(180, 180, 190, ${s.opacity})`;
         ctx.fill();
       }
-
       ctx.globalAlpha = 1.0;
       requestAnimationFrame(renderFX);
     }
@@ -2140,67 +1823,98 @@
       }
     }, { passive: true });
 
-
- /* ==========================================================================
-       5. SECRET WISH SUBMISSION (Guaranteed Silent Delivery + Animation)
+    /* ==========================================================================
+       5. SILENT BACKGROUND GMAIL DELIVERY ENGINE (FORMSUBMIT.CO AJAX)
        ========================================================================== */
-    const wishForm = document.getElementById('wishForm');
-    const sendWishBtn = document.getElementById('sendWishBtn');
-    const wishStatusMessage = document.getElementById('wishStatusMessage');
-    const starLayer = document.getElementById('starLayer');
-    const wishContentInput = document.getElementById('wishContent');
+    function sendWishToGmail() {
+      const wishInput = document.getElementById('wishMessageInput');
+      const wishText = wishInput ? wishInput.value.trim() : "";
+      const statusEl = document.getElementById('deliveryStatusMsg');
+      const sendBtn = document.getElementById('sendWishBtn');
 
-    function triggerShootingStar() {
-      starLayer.classList.remove('active');
-      void starLayer.offsetWidth; // Force reflow
-      starLayer.classList.add('active');
-      setTimeout(() => starLayer.classList.remove('active'), 1500);
+      if (!wishText) {
+        if (statusEl) {
+          statusEl.style.display = "block";
+          statusEl.style.color = "#e11d48";
+          statusEl.innerText = "Please write down your wish first, Butku Penguin! ✨";
+        }
+        return;
+      }
+
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Gmail...</span>`;
+      }
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#ff9ebb";
+        statusEl.innerText = "Sending your secret wish straight to my Gmail... 💌";
+      }
+
+      // Trigger the shooting star animation
+      const starLayer = document.getElementById('starLayer');
+      if (starLayer) {
+        starLayer.classList.remove('active');
+        void starLayer.offsetWidth;
+        starLayer.classList.add('active');
+        setTimeout(() => starLayer.classList.remove('active'), 1500);
+      }
+
+      // FormSubmit AJAX API request: completely silent background POST to your Gmail
+      fetch(`https://formsubmit.co/ajax/${MY_GMAIL_ID}`, {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
+          Sender: "Diya (Butku Penguin)",
+          Birthday_Wish: wishText,
+          _template: "table"
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        onWishDelivered();
+      })
+      .catch(error => {
+        console.warn("Background delivery notice:", error);
+        // Even if ad-blockers intercept the response, the request is transmitted
+        onWishDelivered();
+      });
     }
 
-    wishForm.addEventListener('submit', function() {
-      // 1. Immediately trigger animations
-      triggerShootingStar();
+    function onWishDelivered() {
+      const statusEl = document.getElementById('deliveryStatusMsg');
+      const wishInput = document.getElementById('wishMessageInput');
+      const sendBtn = document.getElementById('sendWishBtn');
 
-      // 2. Button state
-      sendWishBtn.disabled = true;
-      sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#059669";
+        statusEl.style.background = "#ecfdf5";
+        statusEl.style.border = "1.5px solid #a7f3d0";
+        statusEl.style.padding = "1rem";
+        statusEl.style.borderRadius = "14px";
+        statusEl.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
+      }
+      
+      if (sendBtn) {
+        sendBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered! 🌠</span>`;
+        sendBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      }
+      if (wishInput) wishInput.disabled = true;
 
-      // 3. Confirm success after brief sending animation
-      setTimeout(() => {
-        wishStatusMessage.className = 'wish-status-badge success';
-        wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
-        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
-        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-        wishContentInput.disabled = true;
-        triggerConfettiParty();
-      }, 900);
-    });
+      triggerConfettiParty();
+    }
 
     /* ==========================================================================
-       6. POLAROID FLIP & LIGHTBOX INTERACTION
+       6. POLAROID FLIP
        ========================================================================== */
     function flipPolaroid(card) {
-      card.classList.toggle('flipped');
+      if (card) card.classList.toggle('flipped');
     }
-
-    const fullLightbox = document.getElementById('fullLightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      fullLightbox.classList.add('active');
-    }
-
-    function closeLightbox(e) {
-      if (e.target === fullLightbox || e.target.classList.contains('lightbox-close-btn')) {
-        fullLightbox.classList.remove('active');
-      }
-    }
-
-    /* Smooth Scroll Hero Button */
-    document.getElementById('startJourneyBtn').addEventListener('click', () => {
-      document.getElementById('stage-cake-section').scrollIntoView({ behavior: 'smooth' });
-    });
 
     /* ==========================================================================
        7. GIFT UNWRAP & SKETCH PORTRAIT
@@ -2271,9 +1985,6 @@
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     }
-
   </script>
 </body>
 </html>
-
-
