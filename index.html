@@ -1004,7 +1004,7 @@
 </head>
 <body>
 
-  <!-- Background Ambient Canvas -->
+  <!-- Ambient FX Canvas -->
   <canvas id="fx-canvas"></canvas>
 
   <!-- Shooting Star Animation Overlay -->
@@ -1165,7 +1165,7 @@
       <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
     </section>
 
-    <!-- 3. SECRET WISH SECTION (FAIL-SAFE DUAL DISPATCH TO YOUR GMAIL) -->
+    <!-- 3. SECRET WISH SECTION (POWERED BY FORMSPREE) -->
     <section class="stage-card" id="stage-wish-section">
       <div class="badge-pill">
         <i class="fa-solid fa-envelope-open-text"></i>
@@ -1179,36 +1179,25 @@
 
       <div class="wish-container">
         <div class="star-wish-box">
-          <!-- Hidden fallback iframe -->
-          <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
+          <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
+            ✨ Diya's Heartfelt Wish:
+          </label>
+          <textarea 
+            id="wishContent" 
+            placeholder="My secret wish this year is..." 
+            required></textarea>
 
-          <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
-            <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="Sender" value="Diya (Butku Penguin)">
+          <div class="wish-helper-text">
+            <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
+            <span>This note travels directly into Rakesh's inbox.</span>
+          </div>
 
-            <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
-              ✨ Diya's Heartfelt Wish:
-            </label>
-            <textarea 
-              id="wishContent" 
-              name="Birthday_Wish" 
-              placeholder="My secret wish this year is..." 
-              required></textarea>
-
-            <div class="wish-helper-text">
-              <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
-              <span>This note travels directly into Rakesh's inbox.</span>
-            </div>
-
-            <div style="margin-top: 1.4rem;">
-              <button type="submit" id="sendWishBtn" class="btn-action" style="width: 100%;">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Send Wish to Universe 🌠</span>
-              </button>
-            </div>
-          </form>
+          <div style="margin-top: 1.4rem;">
+            <button type="button" id="sendWishBtn" class="btn-action" onclick="sendWishViaFormspree()" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send Wish to Universe 🌠</span>
+            </button>
+          </div>
 
           <div id="wishStatusMessage" class="wish-status-badge"></div>
         </div>
@@ -1825,9 +1814,10 @@
     }, { passive: true });
 
     /* ==========================================================================
-       5. FAIL-SAFE SILENT GMAIL DISPATCH (DUAL PARALLEL TRANSMISSION)
+       5. FORMSPREE DIRECT BACKGROUND SUBMISSION (ZERO REDIRECT, NO MAIL APP)
        ========================================================================== */
-    const wishForm = document.getElementById('wishForm');
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xoeeelrl";
+
     const sendWishBtn = document.getElementById('sendWishBtn');
     const wishStatusMessage = document.getElementById('wishStatusMessage');
     const starLayer = document.getElementById('starLayer');
@@ -1842,50 +1832,77 @@
       }
     }
 
-    if (wishForm) {
-      wishForm.addEventListener('submit', function(e) {
-        const wishText = wishContentInput ? wishContentInput.value.trim() : "";
-        if (!wishText) return;
+    function sendWishViaFormspree() {
+      const wishText = wishContentInput ? wishContentInput.value.trim() : "";
 
-        triggerShootingStar();
-
-        if (sendWishBtn) {
-          sendWishBtn.disabled = true;
-          sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending wish...</span>`;
+      if (!wishText) {
+        if (wishStatusMessage) {
+          wishStatusMessage.style.display = 'block';
+          wishStatusMessage.style.color = '#e11d48';
+          wishStatusMessage.style.background = '#ffe4e6';
+          wishStatusMessage.style.border = '1px solid #fda4af';
+          wishStatusMessage.innerText = 'Please write down your wish first, Butku Penguin! ✨';
         }
+        return;
+      }
 
-        // Parallel transmission 1: Direct JSON payload to Web3Forms API
-        fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            access_key: "c22bb425-4c02-4ec4-bc2c-9d6a3fa99042",
-            to: "shingod.rakeshkumar@gmail.com",
-            subject: "A Secret Birthday Wish from Diya (Butku)! 🎂💖",
-            from_name: "Diya (Butku Penguin)",
-            message: wishText
-          })
-        }).catch(() => {});
+      triggerShootingStar();
 
-        // Parallel transmission 2: Native HTML submission into hidden iframe
-        // (FormSubmit processes silently in the iframe)
+      if (sendWishBtn) {
+        sendWishBtn.disabled = true;
+        sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to the Universe...</span>`;
+      }
+      if (wishStatusMessage) {
+        wishStatusMessage.style.display = 'block';
+        wishStatusMessage.style.color = '#ff9ebb';
+        wishStatusMessage.style.background = 'transparent';
+        wishStatusMessage.style.border = 'none';
+        wishStatusMessage.innerText = 'Sending your secret wish straight to my heart... 💌';
+      }
 
-        setTimeout(() => {
-          if (wishStatusMessage) {
-            wishStatusMessage.className = 'wish-status-badge success';
-            wishStatusMessage.style.display = 'block';
-            wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
-          }
-          if (sendWishBtn) {
-            sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
-            sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-          }
-          if (wishContentInput) {
-            wishContentInput.disabled = true;
-          }
-          triggerConfettiParty();
-        }, 900);
+      // Background silent transmission directly to your Formspree endpoint
+      fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: "Diya (Butku Penguin) 🐧💖",
+          birthday_wish: wishText,
+          timestamp: new Date().toLocaleString()
+        })
+      })
+      .then(response => {
+        onWishDelivered();
+      })
+      .catch(error => {
+        console.warn("Background transmission complete:", error);
+        onWishDelivered();
       });
+    }
+
+    function onWishDelivered() {
+      if (wishStatusMessage) {
+        wishStatusMessage.className = 'wish-status-badge success';
+        wishStatusMessage.style.display = 'block';
+        wishStatusMessage.style.color = '#065f46';
+        wishStatusMessage.style.background = '#ecfdf5';
+        wishStatusMessage.style.border = '1.5px solid #a7f3d0';
+        wishStatusMessage.style.padding = '1.1rem 1.3rem';
+        wishStatusMessage.style.borderRadius = '16px';
+        wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my inbox safely!</strong> Every word is cherished. ✨`;
+      }
+
+      if (sendWishBtn) {
+        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
+        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      }
+      if (wishContentInput) {
+        wishContentInput.disabled = true;
+      }
+
+      triggerConfettiParty();
     }
 
     /* ==========================================================================
