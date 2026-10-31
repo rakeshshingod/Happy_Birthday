@@ -807,7 +807,7 @@
     }
 
     /* ==========================================================================
-       6. 3D GIFT STAGE, SKETCH & 5 NOVELS FLOATING SHELF
+       6. 3D GIFT STAGE, SKETCH & FLOATING NOVELS SHELF
        ========================================================================== */
     .gift-stage-wrapper {
       position: relative;
@@ -979,7 +979,7 @@
       margin-top: 6px;
     }
 
-    /* 5 Floating Novels Shelf */
+    /* Floating Novels Shelf */
     .novels-header-pill {
       display: inline-flex;
       align-items: center;
@@ -1023,6 +1023,8 @@
     .novel-card:nth-child(3) { animation-delay: 0.8s; }
     .novel-card:nth-child(4) { animation-delay: 1.2s; }
     .novel-card:nth-child(5) { animation-delay: 1.6s; }
+    .novel-card:nth-child(6) { animation-delay: 2.0s; }
+    .novel-card:nth-child(7) { animation-delay: 2.4s; }
 
     @keyframes novelFloat {
       0% { transform: translateY(0); }
@@ -1071,7 +1073,7 @@
     }
 
     /* ==========================================================================
-       7. IN-WEBSITE PDF READER & VIEWER MODAL
+       7. IN-WEBSITE READER & VIEWER MODAL
        ========================================================================== */
     .pdf-modal-backdrop {
       position: fixed;
@@ -1258,7 +1260,7 @@
     </div>
   </div>
 
-  <!-- IN-WEBSITE SCROLLABLE PDF READER MODAL -->
+  <!-- IN-WEBSITE SCROLLABLE READER MODAL -->
   <div id="pdfModalBackdrop" class="pdf-modal-backdrop">
     <div class="pdf-viewer-card">
       <div class="pdf-header-bar">
@@ -1269,13 +1271,13 @@
         <div class="pdf-actions">
           <a id="pdfDownloadBtn" href="#" download class="btn-download-pdf">
             <i class="fa-solid fa-cloud-arrow-down"></i>
-            <span>Download PDF</span>
+            <span id="pdfDownloadLabel">Download</span>
           </a>
           <button class="close-pdf-btn" onclick="closePdfReader()" title="Close Reader">&times;</button>
         </div>
       </div>
       <div class="pdf-frame-wrapper">
-        <iframe id="pdfFrame" src="" title="PDF Reader"></iframe>
+        <iframe id="pdfFrame" src="" title="Book Reader"></iframe>
       </div>
     </div>
   </div>
@@ -1466,6 +1468,26 @@
         Tap any polaroid picture to flip it and read the secret note written on the back!
       </p>
 
+      <!-- =========================================================================================
+           GUIDE: HOW TO ADD A NEW FLIP CARD
+           -----------------------------------------------------------------------------------------
+           To add a new polaroid card, copy and paste the block below anywhere inside the ".polaroid-grid":
+
+           <div class="polaroid-card" onclick="flipPolaroid(this)">
+             <div class="polaroid-inner">
+               <div class="polaroid-front">
+                 <img src="images/your_new_image.jpeg" alt="Card Description" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=New+Memory'">
+                 <div class="polaroid-front-caption"><span>Caption Title</span> 🌸</div>
+                 <div class="flip-indicator-hint">Tap to flip ↺</div>
+               </div>
+               <div class="polaroid-back">
+                 <div class="polaroid-back-text">"Your personalized secret quote or heartfelt text goes here."</div>
+                 <div class="flip-indicator-hint">Tap to flip back</div>
+               </div>
+             </div>
+           </div>
+           ========================================================================================= -->
+
       <div class="polaroid-grid">
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
@@ -1542,7 +1564,7 @@
       </div>
     </section>
 
-    <!-- 6. 3D GIFT BOX WITH SKETCH & 5 FLOATING NOVELS -->
+    <!-- 6. 3D GIFT BOX WITH SKETCH & 7 FLOATING NOVELS -->
     <section class="stage-card" id="stage-gift-section">
       <div class="badge-pill">
         <i class="fa-solid fa-gift"></i>
@@ -1590,7 +1612,7 @@
             </div>
           </div>
 
-          <!-- 2. The 5 Floating Novels Shelf -->
+          <!-- 2. The 7 Floating Novels Shelf -->
           <div class="novels-shelf-wrap" id="novelsShelf">
             <div class="novels-header-pill">
               <i class="fa-solid fa-book-sparkles"></i>
@@ -1643,6 +1665,24 @@
                   <img src="images/image5.png" alt="Novel 5" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+5'">
                 </div>
                 <div class="novel-name-tag">Novel 5</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 6 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book6.html', 'Novel 6')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image6.jpg" alt="Novel 6" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+6'">
+                </div>
+                <div class="novel-name-tag">Novel 6</div>
+                <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
+              </div>
+
+              <!-- Novel 7 -->
+              <div class="novel-card" onclick="openPdfReader('images/Book7.html', 'Novel 7')">
+                <div class="novel-cover-wrap">
+                  <img src="images/image7.jpg" alt="Novel 7" onerror="this.src='https://placehold.co/300x450/ffe4e6/be123c?text=Novel+7'">
+                </div>
+                <div class="novel-name-tag">Novel 7</div>
                 <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
               </div>
             </div>
@@ -2228,7 +2268,7 @@
     }
 
     /* ==========================================================================
-       7. GIFT UNWRAP, SKETCH & 5 NOVELS REVEAL
+       7. GIFT UNWRAP, SKETCH & NOVELS REVEAL
        ========================================================================== */
     const giftBox3D = document.getElementById('giftBox3D');
     const wrapTape = document.getElementById('wrapTape');
@@ -2289,19 +2329,26 @@
     if (wrapTape) wrapTape.addEventListener('click', unwrapGiftBox);
 
     /* ==========================================================================
-       8. IN-WEBSITE PDF READER & DOWNLOAD ENGINE
+       8. IN-WEBSITE DOCUMENT/BOOK READER & DOWNLOAD ENGINE
        ========================================================================== */
     const pdfModalBackdrop = document.getElementById('pdfModalBackdrop');
     const pdfFrame = document.getElementById('pdfFrame');
     const pdfBookTitle = document.getElementById('pdfBookTitle');
     const pdfDownloadBtn = document.getElementById('pdfDownloadBtn');
+    const pdfDownloadLabel = document.getElementById('pdfDownloadLabel');
 
-    function openPdfReader(pdfUrl, titleText) {
+    function openPdfReader(docUrl, titleText) {
       if (pdfBookTitle) pdfBookTitle.innerText = titleText;
-      if (pdfFrame) pdfFrame.src = pdfUrl;
+      if (pdfFrame) pdfFrame.src = docUrl;
+      
+      const fileExt = docUrl.split('.').pop().toLowerCase();
+      
       if (pdfDownloadBtn) {
-        pdfDownloadBtn.href = pdfUrl;
-        pdfDownloadBtn.setAttribute('download', `${titleText}.pdf`);
+        pdfDownloadBtn.href = docUrl;
+        pdfDownloadBtn.setAttribute('download', `${titleText}.${fileExt}`);
+      }
+      if (pdfDownloadLabel) {
+        pdfDownloadLabel.textContent = fileExt === 'html' ? 'Download Webpage' : 'Download PDF';
       }
       if (pdfModalBackdrop) pdfModalBackdrop.classList.add('active');
     }
