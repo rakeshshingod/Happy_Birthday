@@ -690,18 +690,21 @@
       100% { top: 70%; right: 90%; width: 0; opacity: 0; }
     }
 
-    /* Polaroids */
+    /* Polaroids - 3 Column Responsive Grid */
     .polaroid-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
       padding: 0.5rem;
       perspective: 1000px;
+      justify-items: center;
     }
 
     .polaroid-card {
       background: transparent;
+      width: 100%;
+      max-width: 280px;
       height: 340px;
       perspective: 1000px;
       cursor: pointer;
@@ -743,16 +746,17 @@
 
     .polaroid-front-img {
       width: 100%;
-      height: 230px;
+      height: 215px;
       border-radius: 10px;
       object-fit: cover;
       background: #fdf2f8;
+      flex-shrink: 0;
     }
 
     .polaroid-front-caption {
       font-family: 'Dancing Script', cursive;
       font-size: 1.45rem;
-      margin-top: 0.85rem;
+      margin-top: 0.75rem;
       color: #3b2a2d;
       text-align: center;
     }
@@ -775,7 +779,8 @@
     .flip-indicator-hint {
       font-size: 0.75rem;
       color: var(--soft-rose);
-      margin-top: 0.8rem;
+      margin-top: auto;
+      padding-top: 0.4rem;
       text-transform: uppercase;
       font-weight: 600;
     }
@@ -1025,6 +1030,7 @@
     .novel-card:nth-child(5) { animation-delay: 1.6s; }
     .novel-card:nth-child(6) { animation-delay: 2.0s; }
     .novel-card:nth-child(7) { animation-delay: 2.4s; }
+    .novel-card:nth-child(8) { animation-delay: 2.8s; }
 
     @keyframes novelFloat {
       0% { transform: translateY(0); }
@@ -1070,6 +1076,64 @@
       margin-top: 0.35rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    .special-gift-novel {
+      border: 1.5px solid #fbbf24;
+      background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+    }
+
+    .gift-check-question {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-top: 0.25rem;
+      text-align: center;
+    }
+
+    .gift-btn-group {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .gift-opt-btn {
+      flex: 1;
+      padding: 0.35rem 0.4rem;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .gift-opt-btn.yes-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .gift-opt-btn.no-btn {
+      background: #ffe4e6;
+      color: #e11d48;
+      border: 1px solid #fda4af;
+    }
+
+    .gift-opt-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .gift-status-reply {
+      display: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 0.45rem;
+      text-align: center;
+      line-height: 1.3;
     }
 
     /* ==========================================================================
@@ -1222,73 +1286,13 @@
       .container { padding: 4.6rem 0.85rem 2.5rem 0.85rem; }
       .stage-card { padding: 1.8rem 1rem; border-radius: 22px; margin-bottom: 2.2rem; }
       .highlight-name { font-size: 2.4rem; }
-      .polaroid-grid { grid-template-columns: 1fr; max-width: 290px; margin: 0 auto; }
+      .polaroid-grid { grid-template-columns: 1fr; max-width: 290px; margin: 1.5rem auto 0 auto; }
       .novels-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .letter-card { padding: 1.6rem 1.2rem; }
       .letter-body { font-size: 1rem; line-height: 1.8; }
       .floating-reel-card { width: 280px; height: 480px; }
       .pdf-viewer-card { height: 95vh; max-width: 98vw; }
       .pdf-title-info { font-size: 0.95rem; }
-    }
-
-.novel-card:nth-child(8) { animation-delay: 2.8s; }
-
-    .special-gift-novel {
-      border: 1.5px solid #fbbf24;
-      background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
-    }
-
-    .gift-check-question {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-sub);
-      margin-top: 0.25rem;
-      text-align: center;
-    }
-
-    .gift-btn-group {
-      display: flex;
-      gap: 0.45rem;
-      margin-top: 0.5rem;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .gift-opt-btn {
-      flex: 1;
-      padding: 0.35rem 0.4rem;
-      border-radius: 20px;
-      font-family: inherit;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-    }
-
-    .gift-opt-btn.yes-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
-      box-shadow: 0 3px 8px rgba(16, 185, 129, 0.25);
-    }
-
-    .gift-opt-btn.no-btn {
-      background: #ffe4e6;
-      color: #e11d48;
-      border: 1px solid #fda4af;
-    }
-
-    .gift-opt-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .gift-status-reply {
-      display: none;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-top: 0.45rem;
-      text-align: center;
-      line-height: 1.3;
     }
   </style>
 </head>
@@ -1531,24 +1535,12 @@
       <!-- =========================================================================================
            GUIDE: HOW TO ADD A NEW FLIP CARD
            -----------------------------------------------------------------------------------------
-           To add a new polaroid card, copy and paste the block below anywhere inside the ".polaroid-grid":
-
-           <div class="polaroid-card" onclick="flipPolaroid(this)">
-             <div class="polaroid-inner">
-               <div class="polaroid-front">
-                 <img src="images/your_new_image.jpeg" alt="Card Description" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=New+Memory'">
-                 <div class="polaroid-front-caption"><span>Caption Title</span> 🌸</div>
-                 <div class="flip-indicator-hint">Tap to flip ↺</div>
-               </div>
-               <div class="polaroid-back">
-                 <div class="polaroid-back-text">"Your personalized secret quote or heartfelt text goes here."</div>
-                 <div class="flip-indicator-hint">Tap to flip back</div>
-               </div>
-             </div>
-           </div>
+           Always paste new <div class="polaroid-card">...</div> blocks INSIDE the ".polaroid-grid"
+           container right before its single closing </div> tag at the bottom of the list!
            ========================================================================================= -->
 
       <div class="polaroid-grid">
+        <!-- Card 1 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
@@ -1563,6 +1555,7 @@
           </div>
         </div>
 
+        <!-- Card 2 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
@@ -1577,6 +1570,7 @@
           </div>
         </div>
 
+        <!-- Card 3 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
@@ -1591,11 +1585,12 @@
           </div>
         </div>
 
+        <!-- Card 4 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
-              <img src="images/Butku2.png" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Always+Smiling'">
-              <div class="polaroid-front-caption"><span>Always In Your Corner</span> 😊</div>
+              <img src="images/Butku2.png" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Best+Friend'">
+              <div class="polaroid-front-caption"><span>Always In Your Corner</span> 🐧</div>
               <div class="flip-indicator-hint">Tap to flip ↺</div>
             </div>
             <div class="polaroid-back">
@@ -1605,11 +1600,12 @@
           </div>
         </div>
 
+        <!-- Card 5 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
-              <img src="images/Butku6.jpg" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Always+Smiling'">
-              <div class="polaroid-front-caption"><span>Little Moments, Big Smiles</span> 🫠</div>
+              <img src="images/Butku1.jpeg" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Good+Times'">
+              <div class="polaroid-front-caption"><span>Little Moments, Big Smiles</span> 🌻</div>
               <div class="flip-indicator-hint">Tap to flip ↺</div>
             </div>
             <div class="polaroid-back">
@@ -1619,11 +1615,12 @@
           </div>
         </div>
 
+        <!-- Card 6 -->
         <div class="polaroid-card" onclick="flipPolaroid(this)">
           <div class="polaroid-inner">
             <div class="polaroid-front">
-              <img src="images/Butku7.jpg" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Always+Smiling'">
-              <div class="polaroid-front-caption"><span>Unmatched Vibe & Grace</span> 😃</div>
+              <img src="images/Butku2.png" alt="My Dearest Butku" class="polaroid-front-img" onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=Keep+Shining'">
+              <div class="polaroid-front-caption"><span>Unmatched Vibe & Grace</span> ✨</div>
               <div class="flip-indicator-hint">Tap to flip ↺</div>
             </div>
             <div class="polaroid-back">
@@ -1666,7 +1663,7 @@
       </div>
     </section>
 
-    <!-- 6. 3D GIFT BOX WITH SKETCH & 7 FLOATING NOVELS -->
+    <!-- 6. 3D GIFT BOX WITH SKETCH & FLOATING NOVELS -->
     <section class="stage-card" id="stage-gift-section">
       <div class="badge-pill">
         <i class="fa-solid fa-gift"></i>
@@ -1714,7 +1711,7 @@
             </div>
           </div>
 
-          <!-- 2. The 7 Floating Novels Shelf -->
+          <!-- 2. The Floating Novels Shelf -->
           <div class="novels-shelf-wrap" id="novelsShelf">
             <div class="novels-header-pill">
               <i class="fa-solid fa-book-sparkles"></i>
@@ -1787,10 +1784,8 @@
                 <div class="novel-name-tag">Novel 7</div>
                 <div class="novel-read-hint"><i class="fa-solid fa-book-open"></i> Read Book</div>
               </div>
-            </div>
-          </div>
 
-    <!-- Novel 8: Special Physical Gift (The Alchemist) -->
+              <!-- Novel 8: Special Physical Gift (The Alchemist) -->
               <div class="novel-card special-gift-novel" style="cursor: default;">
                 <div class="novel-cover-wrap">
                   <img src="images/alchemist.jpg" alt="The Alchemist" onerror="this.src='https://placehold.co/300x450/fef3c7/b45309?text=The+Alchemist'">
@@ -1804,6 +1799,8 @@
                 </div>
                 <div id="alchemistStatusMsg" class="gift-status-reply"></div>
               </div>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -2332,7 +2329,6 @@
         wishStatusMessage.innerText = 'Sending your secret wish straight to my heart... 💌';
       }
 
-      // Background silent transmission directly to your Formspree endpoint
       fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         headers: {
@@ -2345,7 +2341,7 @@
           timestamp: new Date().toLocaleString()
         })
       })
-      .then(response => {
+      .then(() => {
         onWishDelivered();
       })
       .catch(error => {
@@ -2377,6 +2373,55 @@
       triggerConfettiParty();
     }
 
+    // Physical Gift (The Alchemist) Yes/No Gmail Notification
+    function sendGiftStatus(choice) {
+      const btnGroup = document.getElementById('alchemistBtnGroup');
+      const statusMsg = document.getElementById('alchemistStatusMsg');
+
+      const emailMessage = choice === 'Yes' 
+        ? "I have received your gift! 🎁📚 (The Alchemist)" 
+        : "I haven't received your gift yet. 📦";
+
+      if (btnGroup) btnGroup.style.display = 'none';
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.color = '#6e5d63';
+        statusMsg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Updating...`;
+      }
+
+      fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: "Diya (Butku Penguin) 🐧💖",
+          gift_book: "The Alchemist",
+          gift_delivery_status: emailMessage,
+          timestamp: new Date().toLocaleString()
+        })
+      })
+      .then(() => {
+        showGiftReply(choice, statusMsg);
+      })
+      .catch(() => {
+        showGiftReply(choice, statusMsg);
+      });
+    }
+
+    function showGiftReply(choice, statusMsg) {
+      if (!statusMsg) return;
+      if (choice === 'Yes') {
+        statusMsg.style.color = '#059669';
+        statusMsg.innerHTML = "Yay! Hope you love reading it! 🌟";
+        triggerConfettiParty();
+      } else {
+        statusMsg.style.color = '#e11d48';
+        statusMsg.innerHTML = "Noted! It's on its way to you soon! 🚚✨";
+      }
+    }
+
     /* ==========================================================================
        6. POLAROID FLIP
        ========================================================================== */
@@ -2403,7 +2448,7 @@
       if (surpriseContainer) surpriseContainer.classList.add('revealed');
       if (openGiftBtn) openGiftBtn.style.display = 'none';
       if (giftInstructionsText) {
-        giftInstructionsText.innerHTML = "✨ Beautiful! sketch & your special novels library just for my sweet Butku Penguin! 🐧🎨📚";
+        giftInstructionsText.innerHTML = "✨ Beautiful! Sketch & your special novels library just for my sweet Butku Penguin! 🐧🎨📚";
       }
 
       triggerConfettiParty();
@@ -2488,54 +2533,6 @@
         const target = document.getElementById('stage-cake-section');
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
-    }
-
-function sendGiftStatus(choice) {
-      const btnGroup = document.getElementById('alchemistBtnGroup');
-      const statusMsg = document.getElementById('alchemistStatusMsg');
-
-      const emailMessage = choice === 'Yes' 
-        ? "I have received your gift! 🎁📚 (The Alchemist)" 
-        : "I haven't received your gift yet. 📦";
-
-      if (btnGroup) btnGroup.style.display = 'none';
-      if (statusMsg) {
-        statusMsg.style.display = 'block';
-        statusMsg.style.color = '#6e5d63';
-        statusMsg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Updating...`;
-      }
-
-      fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          sender: "Diya (Butku Penguin) 🐧💖",
-          gift_book: "The Alchemist",
-          gift_delivery_status: emailMessage,
-          timestamp: new Date().toLocaleString()
-        })
-      })
-      .then(() => {
-        showGiftReply(choice, statusMsg);
-      })
-      .catch(() => {
-        showGiftReply(choice, statusMsg);
-      });
-    }
-
-    function showGiftReply(choice, statusMsg) {
-      if (!statusMsg) return;
-      if (choice === 'Yes') {
-        statusMsg.style.color = '#059669';
-        statusMsg.innerHTML = "Yay! Hope you love reading it! 🌟";
-        triggerConfettiParty();
-      } else {
-        statusMsg.style.color = '#e11d48';
-        statusMsg.innerHTML = "Noted! It's on its way to you soon! 🚚✨";
-      }
     }
   </script>
 </body>
