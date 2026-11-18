@@ -1230,6 +1230,66 @@
       .pdf-viewer-card { height: 95vh; max-width: 98vw; }
       .pdf-title-info { font-size: 0.95rem; }
     }
+
+.novel-card:nth-child(8) { animation-delay: 2.8s; }
+
+    .special-gift-novel {
+      border: 1.5px solid #fbbf24;
+      background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+    }
+
+    .gift-check-question {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-top: 0.25rem;
+      text-align: center;
+    }
+
+    .gift-btn-group {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .gift-opt-btn {
+      flex: 1;
+      padding: 0.35rem 0.4rem;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .gift-opt-btn.yes-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .gift-opt-btn.no-btn {
+      background: #ffe4e6;
+      color: #e11d48;
+      border: 1px solid #fda4af;
+    }
+
+    .gift-opt-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .gift-status-reply {
+      display: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 0.45rem;
+      text-align: center;
+      line-height: 1.3;
+    }
   </style>
 </head>
 <body>
@@ -1729,6 +1789,21 @@
               </div>
             </div>
           </div>
+
+    <!-- Novel 8: Special Physical Gift (The Alchemist) -->
+              <div class="novel-card special-gift-novel" style="cursor: default;">
+                <div class="novel-cover-wrap">
+                  <img src="images/alchemist.jpg" alt="The Alchemist" onerror="this.src='https://placehold.co/300x450/fef3c7/b45309?text=The+Alchemist'">
+                </div>
+                <div class="novel-name-tag">The Alchemist ✨</div>
+                <div class="gift-check-question">Did you get your gift? 🎁</div>
+                
+                <div class="gift-btn-group" id="alchemistBtnGroup">
+                  <button type="button" class="gift-opt-btn yes-btn" onclick="sendGiftStatus('Yes')">Yes 💖</button>
+                  <button type="button" class="gift-opt-btn no-btn" onclick="sendGiftStatus('No')">No 🥺</button>
+                </div>
+                <div id="alchemistStatusMsg" class="gift-status-reply"></div>
+              </div>
 
         </div>
       </div>
@@ -2413,6 +2488,54 @@
         const target = document.getElementById('stage-cake-section');
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
+    }
+
+function sendGiftStatus(choice) {
+      const btnGroup = document.getElementById('alchemistBtnGroup');
+      const statusMsg = document.getElementById('alchemistStatusMsg');
+
+      const emailMessage = choice === 'Yes' 
+        ? "I have received your gift! 🎁📚 (The Alchemist)" 
+        : "I haven't received your gift yet. 📦";
+
+      if (btnGroup) btnGroup.style.display = 'none';
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.color = '#6e5d63';
+        statusMsg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Updating...`;
+      }
+
+      fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: "Diya (Butku Penguin) 🐧💖",
+          gift_book: "The Alchemist",
+          gift_delivery_status: emailMessage,
+          timestamp: new Date().toLocaleString()
+        })
+      })
+      .then(() => {
+        showGiftReply(choice, statusMsg);
+      })
+      .catch(() => {
+        showGiftReply(choice, statusMsg);
+      });
+    }
+
+    function showGiftReply(choice, statusMsg) {
+      if (!statusMsg) return;
+      if (choice === 'Yes') {
+        statusMsg.style.color = '#059669';
+        statusMsg.innerHTML = "Yay! Hope you love reading it! 🌟";
+        triggerConfettiParty();
+      } else {
+        statusMsg.style.color = '#e11d48';
+        statusMsg.innerHTML = "Noted! It's on its way to you soon! 🚚✨";
+      }
     }
   </script>
 </body>
